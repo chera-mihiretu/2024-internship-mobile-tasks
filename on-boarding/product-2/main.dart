@@ -5,12 +5,13 @@ import 'product.dart';
 // Starting the application
 void main() {
   ECommerce commerce = new ECommerce();
-
+  // commands
   List<String> commands = [
     'Add Product',
     'View Product',
     'Update Product',
-    'Delete Product'
+    'Delete Product',
+    'Search Product'
   ];
   String? input;
   while (true) {
@@ -38,7 +39,7 @@ void main() {
             print("Description is required");
             break;
           }
-          String desc = input!;
+          String desc = input;
 
           // enter price
           stdout.write('Price: ');
@@ -53,12 +54,13 @@ void main() {
           commerce.addProduct(Product.id, name, desc, price);
           break;
         case 1:
+          print('-------------------------------------');
           List<dynamic> answer = commerce.viewProducts();
           for (int i = 0; i < answer.length; i++) {
             for (String value in answer[i]) {
               stdout.write('$value \t');
             }
-            print('\n');
+            print('');
           }
           print('-------------------------------------');
           break;
@@ -76,15 +78,12 @@ void main() {
           stdout.write("Enter the new description: ");
           String? desc = stdin.readLineSync();
           stdout.write("Enter the new price: ");
-          input = stdin.readLineSync();
-          if (input != null) {
-            commerce.updateProduct(id, name, desc);
-          } else {
-            commerce.updateProduct(id, name, desc, int.parse(input!));
-          }
+          String? price = stdin.readLineSync();
+          commerce.updateProduct(id, name, desc, price);
 
           break;
         case 3:
+          // delete a product by id
           stdout.write("Enter the ID of the product to update: ");
           input = stdin.readLineSync();
           if (input == null) {
@@ -92,6 +91,25 @@ void main() {
             break;
           }
           commerce.deleteProduct(int.parse(input));
+          break;
+        case 4:
+          // here we colect a user based on his id
+          stdout.write("Enter the ID of the product to search: ");
+          input = stdin.readLineSync();
+          if (input == null) {
+            print("ID is required");
+            break;
+          }
+          List<dynamic> answer = commerce.viewSingleProduct(input);
+
+          if (answer.length > 0) {
+            print('--------------------------------');
+            for (String value in answer) {
+              stdout.write('$value \t');
+            }
+            print('');
+            print('--------------------------------');
+          }
           break;
         default:
           print("Invalid command. Please try again.");

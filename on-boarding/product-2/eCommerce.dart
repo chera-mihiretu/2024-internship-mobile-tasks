@@ -4,9 +4,11 @@ class ECommerce {
   Map<int, Product> _my_products = {}; // [id : Procuts] products mapped with id
 
   // this function will add product to the list
-  String addProduct(int id, String name, String description, int price) {
+  void addProduct(int id, String name, String description, int price) {
+    print('--------------------------------');
     _my_products[id] = Product(name, description, price);
-    return "product added successfully.";
+    print("product added successfully.");
+    print('--------------------------------');
   }
 
   // this will show the products
@@ -25,8 +27,9 @@ class ECommerce {
   }
 
   //  shows single product
-  List<String> viewSingleProduct([String? name, int? id]) {
-    if (id != null) {
+  List<String> viewSingleProduct(String? pro_id) {
+    if (pro_id != null && pro_id.length > 0) {
+      int id = int.parse(pro_id);
       // when user searches with id
       if (_my_products.containsKey(id)) {
         return [
@@ -36,32 +39,23 @@ class ECommerce {
           _my_products[id]!.price.toString()
         ];
       }
-    } else {
-      // when user searches with name
-      for (int i in _my_products.keys) {
-        if (_my_products[i]!.name.toLowerCase() == name!.toLowerCase()) {
-          return [
-            i.toString(),
-            _my_products[i]!.name,
-            _my_products[i]!.description,
-            _my_products[i]!.price.toString()
-          ];
-        }
-      }
     }
+
+    print('--------------------------------');
     print('No products found');
     print('--------------------------------');
     return []; // return this when product not found  by name or id  in the list of products.
   }
 
   // this will help to update the products
-  void updateProduct(int id, [String? name, String? description, int? price]) {
+  void updateProduct(int id,
+      [String? name, String? description, String? price]) {
     if (!_my_products.containsKey(id)) {
       print("Product not found");
       return;
     }
     // update the name
-    if (name != null) {
+    if (name != null && name.length > 0) {
       _my_products[id]!.name = name;
     }
 
@@ -71,8 +65,8 @@ class ECommerce {
     }
 
     // update the price
-    if (price != null) {
-      _my_products[id]!.price = price;
+    if (price != null && price.length > 0) {
+      _my_products[id]!.price = int.parse(price);
     }
     print("product updated");
     print('-----------------------------------');
@@ -81,8 +75,7 @@ class ECommerce {
   // this will help to delete the products
   void deleteProduct(int key) {
     if (_my_products.containsKey(key)) {
-      _my_products.remove(
-          key); // remove the product from the list by key.  // this will also remove the product from the list of products.  // so, we have to use this function carefully.
+      _my_products.remove(key); // remove the product from the list by key.
       print("Product deleted successfully");
       print('--------------------------------');
     } else {
