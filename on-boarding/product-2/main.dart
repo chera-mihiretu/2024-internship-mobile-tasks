@@ -13,6 +13,7 @@ void main() {
     'Delete Product',
     'Search Product'
   ];
+  List<String> titles = ['[ID]:', '[NAME]:', '[DESCRIPTION]:', '[PRICE]:'];
   String? input;
   while (true) {
     print("Choose a command");
@@ -57,8 +58,10 @@ void main() {
           print('-------------------------------------');
           List<dynamic> answer = commerce.viewProducts();
           for (int i = 0; i < answer.length; i++) {
+            int counter = 0;
             for (String value in answer[i]) {
-              stdout.write('$value \t');
+              stdout.write('${titles[counter]} $value \t');
+              counter += 1;
             }
             print('');
           }
@@ -104,8 +107,10 @@ void main() {
 
           if (answer.length > 0) {
             print('--------------------------------');
+            int counter = 0;
             for (String value in answer) {
-              stdout.write('$value \t');
+              stdout.write('${titles[counter]} $value \t');
+              counter++;
             }
             print('');
             print('--------------------------------');
