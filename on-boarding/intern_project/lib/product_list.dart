@@ -30,7 +30,42 @@ class _ProductList extends State<ProductList> {
       body: SafeArea(
         child: Column(
           children: [
-          const UserProfile(userName: "Yohannes", day: "July 14, 2023",),
+            const UserProfile(
+              userName: "Yohannes",
+              day: "July 14, 2023",
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 30,
+                vertical: 10,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Available Product",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                  ),
+                  OutlinedButton(
+                    onPressed: () {},
+                    style: OutlinedButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      side: BorderSide(
+
+                        color: AppConstants.greyColor,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.search,
+                      color: AppConstants.greyColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
             Expanded(
               child: ListView.builder(
                 itemCount: 4,
