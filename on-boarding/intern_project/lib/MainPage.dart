@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intern_project/components/buttons.dart';
 import 'package:intern_project/components/bars.dart';
+import 'package:intern_project/constants.dart';
 import 'components/inputs.dart';
 
 class MainPage extends StatefulWidget {
@@ -36,7 +37,7 @@ class _MainPageState extends State<MainPage> with AppBars{
                       vertical: 10,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 231, 231, 231),
+                      color: AppConstants.greyColor,
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),

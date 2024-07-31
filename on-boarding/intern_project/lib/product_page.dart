@@ -113,7 +113,7 @@ class _SingleProduct extends State<SingleProduct> {
             ),
             SizedBox(
               width: mediaQuery.size.width,
-              height: 75,
+              height: 70,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: ListView.builder(
@@ -135,7 +135,7 @@ class _SingleProduct extends State<SingleProduct> {
                        margin: const EdgeInsets.symmetric(horizontal: 5),
                         padding: const EdgeInsets.all(20),
                         decoration:  BoxDecoration(
-                          color: (size[index][0] == 0) ? Colors.white : Colors.blue,
+                          color: (size[index][0] == 0) ? Colors.white : AppConstants.blueColor,
                             boxShadow:  const [
                                BoxShadow(color: Color.fromARGB(11, 11, 11, 11), spreadRadius: 1, blurRadius: 2)
                             ],
