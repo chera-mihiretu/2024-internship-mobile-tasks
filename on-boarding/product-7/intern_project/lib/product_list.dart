@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intern_project/MainPage.dart';
 import 'package:intern_project/components/common_components.dart';
 import 'package:intern_project/components/product_view.dart';
 import 'package:intern_project/constants.dart';
+import 'package:intern_project/product_page.dart';
+import 'package:intern_project/search_product.dart';
 
 class ProductList extends StatefulWidget {
   static String routes = '/product_list';
@@ -22,7 +25,7 @@ class _ProductList extends State<ProductList> {
           borderRadius: BorderRadius.circular(100),
         ),
         onPressed: () {
-
+          Navigator.pushNamed(context, MainPage.routes);
         },
         child: const Icon(
           Icons.add,
@@ -58,7 +61,9 @@ class _ProductList extends State<ProductList> {
                     ),
                     child: Expanded(
                       child: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, SearchProduct.routes);
+                        },
                         icon: Icon(
                           Icons.search,
                           color: AppConstants.greyColor,
@@ -75,6 +80,9 @@ class _ProductList extends State<ProductList> {
                 itemCount: 4,
                 itemBuilder: (context, index) {
                   return Product(
+                    pressed: (){
+                      Navigator.pushNamed(context, SingleProduct.routes);
+                    },
                     imageUrl: AppConstants.imageUrl,
                     productName: "Derby Leather Shoes",
                     price: 150,
