@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intern_project/MainPage.dart';
+import 'package:intern_project/product_list.dart';
 import 'package:intern_project/product_page.dart';
 
 void main() {
@@ -17,10 +18,12 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       routes: {
+
         MainPage.routes: (context) => const MainPage(),
         SingleProduct.routes: (context) => const SingleProduct(),
+        ProductList.routes : (context) => const ProductList(),
       },
-      initialRoute: SingleProduct.routes,
+      initialRoute: ProductList.routes,
     );
   }
 }
