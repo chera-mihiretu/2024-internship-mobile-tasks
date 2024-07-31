@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intern_project/constants.dart';
 
-import 'components/Buttons.dart';
+import 'components/buttons.dart';
 
 class SingleProduct extends StatefulWidget {
   const SingleProduct({super.key});
@@ -29,7 +29,7 @@ class _SingleProduct extends State<SingleProduct> {
                    AppConstants.imageUrl),
                 SafeArea(
                   child: Padding(
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     child: IconButton(
                       onPressed: () {},
                       icon: const Icon(
@@ -111,7 +111,7 @@ class _SingleProduct extends State<SingleProduct> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: mediaQuery.size.width,
               height: 75,
               child: Padding(

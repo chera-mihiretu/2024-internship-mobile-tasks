@@ -6,6 +6,6 @@ class AppConstants {
   static Color blueColor = const Color.fromARGB(255, 63, 81, 243);
   static Color redColor = const Color.fromARGB(255, 255, 19, 19);
   static Color yellowColor = const Color.fromARGB(255, 255, 215, 0);
-  static Color greyColor = const Color.fromARGB(255, 204, 204, 204);
+  static Color greyColor = const Color.fromARGB(255, 231, 231, 231);
   static Color darkGreyColor = const Color.fromARGB(255, 170, 170, 170);
 }

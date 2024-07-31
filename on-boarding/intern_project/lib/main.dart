@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intern_project/MainPage.dart';
 import 'package:intern_project/product_list.dart';
 import 'package:intern_project/product_page.dart';
+import 'package:intern_project/search_product.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,8 +23,9 @@ class MyApp extends StatelessWidget {
         MainPage.routes: (context) => const MainPage(),
         SingleProduct.routes: (context) => const SingleProduct(),
         ProductList.routes : (context) => const ProductList(),
+        SearchProduct.routes : (context) => const SearchProduct(),
       },
-      initialRoute: ProductList.routes,
+      initialRoute: MainPage.routes,
     );
   }
 }

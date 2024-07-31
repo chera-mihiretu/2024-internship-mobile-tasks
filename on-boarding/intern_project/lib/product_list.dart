@@ -46,23 +46,25 @@ class _ProductList extends State<ProductList> {
                     "Available Product",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                   ),
-                  OutlinedButton(
-                    onPressed: () {},
-                    style: OutlinedButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      side: BorderSide(
-
-                        color: AppConstants.greyColor,
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: AppConstants.greyColor, 
+                        width: 2
                       ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
+                      borderRadius: BorderRadius.circular(16)
                     ),
-                    child: Icon(
-                      Icons.search,
-                      color: AppConstants.greyColor,
+                    child: Expanded(
+                      child: IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.search,
+                          color: AppConstants.greyColor,
+                        ),
+                      ),
                     ),
                   ),
+
                 ],
               ),
             ),
