@@ -8,7 +8,7 @@ class UpdateProductUsecase {
   final ProductRepository updateProductRepository;
   UpdateProductUsecase(this.updateProductRepository);
 
-  Future<Either<Failure, int>> execute(int id, ProductEntity product) async {
-    return await updateProductRepository.updateProduct(id, product);
+  Future<Either<Failure, int>> execute(ProductEntity product) async {
+    return await updateProductRepository.updateProduct(product);
   }
 }

@@ -9,10 +9,10 @@ abstract class ProductRepository {
   /// int to tell how many rows are affected
   Future<Either<Failure, int>> deleteProduct(int id);
 
-  /// Replace the the given product with the given [product]
+  /// Replace the the given product with the given [product] based the the field id
   ///
   /// int to tell how many rows are affected
-  Future<Either<Failure, int>> updateProduct(int id, ProductEntity product);
+  Future<Either<Failure, int>> updateProduct(ProductEntity product);
 
   /// Returns the product of the given [id]
   Future<Either<Failure, ProductEntity>> getProduct(int id);
