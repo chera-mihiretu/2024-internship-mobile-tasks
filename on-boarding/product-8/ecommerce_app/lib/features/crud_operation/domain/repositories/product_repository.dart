@@ -14,6 +14,8 @@ abstract class ProductRepository {
   /// int to tell how many rows are affected
   Future<Either<Failure, int>> updateProduct(ProductEntity product);
 
+  Future<Either<Failure, List<ProductEntity>>> getAllProducts();
+
   /// Returns the product of the given [id]
   Future<Either<Failure, ProductEntity>> getProduct(int id);
 
