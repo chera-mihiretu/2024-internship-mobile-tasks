@@ -17,3 +17,5 @@ A Flutter application developed using clean architecture. This approach divides 
 ## Advantage og Clean Arcitecture
 
 By separating these concerns, the application maintains high cohesion within each layer while promoting low coupling between them, resulting in a clean, maintainable, and easily testable codebase.
+
+- [Readmore...](https://resocoder.com/2019/08/27/flutter-tdd-clean-architecture-course-1-explanation-project-structure/)
