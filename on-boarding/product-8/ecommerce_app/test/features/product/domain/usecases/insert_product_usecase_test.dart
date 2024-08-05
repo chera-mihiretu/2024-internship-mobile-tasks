@@ -16,14 +16,13 @@ void main(){
     insertProductUseCase = InsertProductUseCase(mockProductRepository);
   });
 
-  int id = 8;
   const testData =  ProductEntity(
     id: 0,
     name: 'Derby Leather Sheos',
     description: 'men\'s shoes',
     price: 150.0,
     imageUrl: '');
-  test('Testing the data flow inside the Repositrory of deleting product', () async {
+  test('Testing the data flow inside the Repositrory of inserting product', () async {
     /// Rearranging the functionality
     when(
         mockProductRepository.insertProduct(testData)
