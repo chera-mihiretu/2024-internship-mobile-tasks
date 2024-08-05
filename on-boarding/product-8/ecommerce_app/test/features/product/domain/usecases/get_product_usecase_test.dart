@@ -17,7 +17,7 @@ void main() {
   });
 
   const List<ProductEntity> testingProducts = [
-    const ProductEntity(
+    ProductEntity(
       id: 0,
       name: 'Derby Leather Sheos',
       description: 'men\'s shoes',
