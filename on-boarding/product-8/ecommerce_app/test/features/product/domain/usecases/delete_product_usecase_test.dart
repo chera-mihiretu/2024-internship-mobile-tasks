@@ -16,7 +16,7 @@ void main(){
 
   int id = 8;
 
-  test('Testing the data flow inside the Repositrory', () async {
+  test('Testing the data flow inside the Repositrory of deleting product', () async {
     /// Rearranging the functionality
     when(
       mockProductRepository.deleteProduct(id)
