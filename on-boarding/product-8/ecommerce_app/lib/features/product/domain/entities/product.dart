@@ -7,13 +7,13 @@ class ProductEntity extends Equatable {
   final double price;
   final String imageUrl;
 
-  const ProductEntity(
-    this.id,
-    this.name,
-    this.description,
-    this.price,
-    this.imageUrl,
-  );
+  const ProductEntity({
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.price,
+    required this.imageUrl,
+  });
 
   @override
   // TODO: implement props
