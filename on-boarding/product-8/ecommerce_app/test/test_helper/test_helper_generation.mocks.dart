@@ -264,4 +264,46 @@ class MockLocalProductDataSource extends _i1.Mock
           ),
         )),
       ) as _i5.Future<_i3.ProductModel>);
+
+  @override
+  _i5.Future<void> addProduct(_i3.ProductModel? model) => (super.noSuchMethod(
+        Invocation.method(
+          #addProduct,
+          [model],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> addListOfProduct(List<_i3.ProductModel>? models) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #addListOfProduct,
+          [models],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> removeProduct(String? id) => (super.noSuchMethod(
+        Invocation.method(
+          #removeProduct,
+          [id],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> updateProduct(_i3.ProductModel? model) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateProduct,
+          [model],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
 }
