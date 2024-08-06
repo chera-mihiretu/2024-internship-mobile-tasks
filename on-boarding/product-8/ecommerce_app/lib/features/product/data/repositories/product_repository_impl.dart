@@ -21,33 +21,58 @@ class ProductRepositoryImpl implements ProductRepository {
 
   @override
   Future<Either<Failure, int>> deleteProduct(String id) async {
-    await networkInfo.isConnected;
-    return Right(await remoteProductDataSource.deleteProduct(id));
+    final network = await networkInfo.isConnected;
+    if (network){
+      return Right(await remoteProductDataSource.deleteProduct(id));
+    } else{
+      return Left(ConnectionFailure());
+    }
+
   }
 
   @override
   Future<Either<Failure, List<ProductEntity>>> getAllProducts() async {
-    await networkInfo.isConnected;
-    final result = await remoteProductDataSource.getAllProducts();
-    return Right(ProductModel.allToEntity(result));
+    final network = await networkInfo.isConnected;
+    if (network){
+      final result = await remoteProductDataSource.getAllProducts();
+      return Right(ProductModel.allToEntity(result));
+    }else{
+      final result = await localProductDataSource.getAllProducts();
+      return Right(ProductModel.allToEntity(result));
+    }
   }
 
   @override
   Future<Either<Failure, ProductEntity>> getProduct(String id) async {
-    await networkInfo.isConnected;
-    final result = await remoteProductDataSource.getProduct(id);
-    return Right(result.toEntity());
+    final network = await networkInfo.isConnected;
+    if (network) {
+      final result = await remoteProductDataSource.getProduct(id);
+      return Right(result.toEntity());
+    }else{
+      final result = await localProductDataSource.getProduct(id);
+      return Right(result.toEntity());
+    }
   }
 
   @override
   Future<Either<Failure, int>> insertProduct(ProductEntity product) async {
-    await networkInfo.isConnected;
-    return Right(await remoteProductDataSource.insertProduct(ProductModel.fromEntity(product)));
+    final network = await networkInfo.isConnected;
+    if (network) {
+      return Right(await remoteProductDataSource.insertProduct(
+          ProductModel.fromEntity(product)));
+    }else{
+      return Left(ConnectionFailure());
+    }
   }
 
   @override
   Future<Either<Failure, int>> updateProduct(ProductEntity product) async {
-    await networkInfo.isConnected;
-    return Right(await remoteProductDataSource.updateProduct(ProductModel.fromEntity(product)));
+    final network = await networkInfo.isConnected;
+    if (network) {
+      return Right(await remoteProductDataSource.updateProduct(
+          ProductModel.fromEntity(product)));
+    }else{
+      return Left(ConnectionFailure());
+    }
   }
 }

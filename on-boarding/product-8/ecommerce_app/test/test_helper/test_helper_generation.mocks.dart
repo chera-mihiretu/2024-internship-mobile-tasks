@@ -241,29 +241,26 @@ class MockLocalProductDataSource extends _i1.Mock
   }
 
   @override
-  _i5.Future<List<_i3.ProductModel>> getAllProducts(
-          _i3.ProductModel? productModel) =>
-      (super.noSuchMethod(
+  _i5.Future<List<_i3.ProductModel>> getAllProducts() => (super.noSuchMethod(
         Invocation.method(
           #getAllProducts,
-          [productModel],
+          [],
         ),
         returnValue:
             _i5.Future<List<_i3.ProductModel>>.value(<_i3.ProductModel>[]),
       ) as _i5.Future<List<_i3.ProductModel>>);
 
   @override
-  _i5.Future<_i3.ProductModel> getProduct(_i3.ProductModel? productModel) =>
-      (super.noSuchMethod(
+  _i5.Future<_i3.ProductModel> getProduct(String? id) => (super.noSuchMethod(
         Invocation.method(
           #getProduct,
-          [productModel],
+          [id],
         ),
         returnValue: _i5.Future<_i3.ProductModel>.value(_FakeProductModel_1(
           this,
           Invocation.method(
             #getProduct,
-            [productModel],
+            [id],
           ),
         )),
       ) as _i5.Future<_i3.ProductModel>);
