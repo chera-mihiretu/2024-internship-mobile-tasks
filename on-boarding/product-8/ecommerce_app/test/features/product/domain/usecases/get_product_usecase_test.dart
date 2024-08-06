@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../test_helper/test_helper_generation.mocks.dart';
-import '../../../../test_helper/testing_datas/product_data.dart';
+import '../../../../test_helper/testing_datas/product_testing_data.dart';
 
 void main() {
   late MockProductRepository mockProductRepository;
@@ -14,17 +14,17 @@ void main() {
     mockProductRepository = MockProductRepository();
     getProductUseCase = GetProductUseCase(mockProductRepository);
   });
-  int id = 0;
+
 
   test('Testing the data flow inside the Repositrory of product list return', () async {
     /// Rearranging the functionality
     when(
-        mockProductRepository.getProduct(id)
+        mockProductRepository.getProduct(TestingDatas.id)
     ).thenAnswer((_) async => const Right(TestingDatas.testDataEntity));
 
     /// action
 
-    final result = await getProductUseCase.execute(id);
+    final result = await getProductUseCase.execute(TestingDatas.id);
 
     /// assertion
     ///

@@ -9,7 +9,7 @@ class GetProductUseCase {
   final ProductRepository getProductRepository;
   GetProductUseCase(this.getProductRepository);
 
-  Future<Either<Failure, ProductEntity>> execute(int id) async {
+  Future<Either<Failure, ProductEntity>> execute(String id) async {
     return await getProductRepository.getProduct(id);
   }
 }

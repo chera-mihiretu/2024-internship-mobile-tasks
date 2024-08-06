@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../../test_helper/test_helper_generation.mocks.dart';
-import '../../../../test_helper/testing_datas/product_data.dart';
+import '../../../../test_helper/testing_datas/product_testing_data.dart';
 
 void main(){
   late MockProductRepository mockProductRepository;

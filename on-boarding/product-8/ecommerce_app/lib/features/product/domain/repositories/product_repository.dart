@@ -7,7 +7,7 @@ abstract class ProductRepository {
   /// Delete the row with the given [id]
   ///
   /// int to tell how many rows are affected
-  Future<Either<Failure, int>> deleteProduct(int id);
+  Future<Either<Failure, int>> deleteProduct(String id);
 
   /// Replace the the given product with the given [product] based the the field id
   ///
@@ -17,7 +17,7 @@ abstract class ProductRepository {
   Future<Either<Failure, List<ProductEntity>>> getAllProducts();
 
   /// Returns the product of the given [id]
-  Future<Either<Failure, ProductEntity>> getProduct(int id);
+  Future<Either<Failure, ProductEntity>> getProduct(String id);
 
   /// [product] is inserted into the table
   ///
