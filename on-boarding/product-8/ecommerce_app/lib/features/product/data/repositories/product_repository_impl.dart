@@ -56,7 +56,7 @@ class ProductRepositoryImpl implements ProductRepository {
         final result = await remoteProductDataSource.getAllProducts();
         localProductDataSource.addListOfProduct(result);
         return Right(ProductModel.allToEntity(result));
-      } on ServerFailure {
+      } on ServerException {
         return Left(ServerFailure());
       }
     }else{
@@ -65,7 +65,7 @@ class ProductRepositoryImpl implements ProductRepository {
         final result = await localProductDataSource.getAllProducts();
         return Right(ProductModel.allToEntity(result));
       } on CacheException {
-        return Left(ConnectionFailure());
+        return Left(CacheFailure());
       }
     }
   }
@@ -127,10 +127,14 @@ class ProductRepositoryImpl implements ProductRepository {
   Future<Either<Failure, int>> updateProduct(ProductEntity product) async {
     final network = await networkInfo.isConnected;
     if (network) {
-      final result = await remoteProductDataSource.updateProduct(
-          ProductModel.fromEntity(product));
-      localProductDataSource.updateProduct(ProductModel.fromEntity(product));
-      return Right(result);
+      try{
+        final result = await remoteProductDataSource
+            .updateProduct(ProductModel.fromEntity(product));
+        localProductDataSource.updateProduct(ProductModel.fromEntity(product));
+        return Right(result);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
     }else{
       return Left(ConnectionFailure());
     }

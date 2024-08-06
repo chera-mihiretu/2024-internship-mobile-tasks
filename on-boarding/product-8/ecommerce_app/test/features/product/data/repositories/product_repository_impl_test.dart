@@ -1,11 +1,10 @@
 import 'dart:math';
 
 import 'package:dartz/dartz.dart';
+import 'package:ecommerce_app/core/errors/exceptions/product_exceptions.dart';
 import 'package:ecommerce_app/core/errors/failures/failure.dart';
-import 'package:ecommerce_app/features/product/data/models/product_model.dart';
 
 import 'package:ecommerce_app/features/product/data/repositories/product_repository_impl.dart';
-import 'package:ecommerce_app/features/product/domain/entities/product.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -54,7 +53,7 @@ void main() {
         verify(mockLocalProductDataSource
             .addListOfProduct(TestingDatas.productModelList));
         result.fold((failure) {}, (data) {
-          expect(data, TestingDatas.productModelList);
+          expect(data, TestingDatas.productEntityList);
         });
       });
 
@@ -222,9 +221,123 @@ void main() {
     });
 
     group('See How the methods react to server exception or cache exception', (){
+      setUp((){
+        when(
+          mockNetworkInfo.isConnected
+        ).thenAnswer((_) async => true);
+      });
+
+      /// This test for when ServerException is thrown
+      test('Should return ServerFailure when internet fails', () async {
+        /// arrange
+        when(
+            mockRemoteProductDataSource.getAllProducts()
+        ).thenThrow(ServerException());
 
 
+        /// action
+        final result = await productRepositoryImpl.getAllProducts();
 
+        /// assert
+        verify(mockNetworkInfo.isConnected);
+        verify(mockRemoteProductDataSource.getAllProducts());
+
+        expect(result, Left(ServerFailure()));
+      });
+
+      test('Should return Server failure when getting product  is returned server exception', () async {
+        when(
+          mockRemoteProductDataSource.getProduct(TestingDatas.id)
+        ).thenThrow(ServerException());
+
+        /// action
+        final result = await productRepositoryImpl.getProduct(TestingDatas.id);
+
+        /// assert
+        verify(mockNetworkInfo.isConnected);
+        verify(mockRemoteProductDataSource.getProduct(TestingDatas.id));
+
+        expect(result, Left(ServerFailure()));
+      });
+
+      test('Should return server failure when the deleting user returned server excepion', () async {
+        when(
+            mockRemoteProductDataSource.deleteProduct(TestingDatas.id)
+        ).thenThrow(ServerException());
+
+        /// action
+        final result = await productRepositoryImpl.deleteProduct(TestingDatas.id);
+
+        /// assert
+        verify(mockNetworkInfo.isConnected);
+        verify(mockRemoteProductDataSource.deleteProduct(TestingDatas.id));
+
+        expect(result, Left(ServerFailure()));
+      });
+
+      test('Should return server failure when inserting returns server exception ', () async {
+        when(
+            mockRemoteProductDataSource.insertProduct(TestingDatas.testDataModel)
+        ).thenThrow(ServerException());
+
+        /// action
+        final result = await productRepositoryImpl.insertProduct(TestingDatas.testDataEntity);
+
+        /// assert
+        verify(mockNetworkInfo.isConnected);
+        verify(mockRemoteProductDataSource.insertProduct(TestingDatas.testDataModel));
+
+        expect(result, Left(ServerFailure()));
+      });
+
+      test('Should return server failure when updating returns server exception ', () async {
+        when(
+            mockRemoteProductDataSource.updateProduct(TestingDatas.testDataModel)
+        ).thenThrow(ServerException());
+
+        /// action
+        final result = await productRepositoryImpl.updateProduct(TestingDatas.testDataEntity);
+
+        /// assert
+        verify(mockNetworkInfo.isConnected);
+        verify(mockRemoteProductDataSource.updateProduct(TestingDatas.testDataModel));
+
+        expect(result, Left(ServerFailure()));
+      });
+
+    });
+    
+    
+    group('When cache exception of getProduct and getAllProduct is thrown', (){
+      setUp((){
+        when(
+          mockNetworkInfo.isConnected
+        ).thenAnswer((_) async => false);
+      });
+      test('Should return cache failure whe  cache exception is thrown', () async {
+        /// arrange
+        when(
+          mockLocalProductDataSource.getProduct(TestingDatas.id)
+        ).thenThrow(CacheException());
+        /// action
+        final result = await productRepositoryImpl.getProduct(TestingDatas.id);
+        /// assert 
+        
+        verify(mockNetworkInfo.isConnected);
+        verify(mockLocalProductDataSource.getProduct(TestingDatas.id));
+        expect(result, Left(CacheFailure()));
+      });
+      test('Get all should return cache exception when the local data is empty', () async {
+        /// arrange
+        when(
+          mockLocalProductDataSource.getAllProducts()
+        ).thenThrow(CacheException());
+        /// action
+        final result = await productRepositoryImpl.getAllProducts();
+        verify(mockNetworkInfo.isConnected);
+        verify(mockLocalProductDataSource.getAllProducts());
+        expect(result, Left(CacheFailure()));
+      });
     });
   });
 }
