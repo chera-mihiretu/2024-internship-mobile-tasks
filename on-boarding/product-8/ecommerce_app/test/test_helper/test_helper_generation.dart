@@ -1,9 +1,9 @@
-import 'package:ecommerce_app/core/platform/network_info.dart';
+import 'package:ecommerce_app/core/network/network_info.dart';
 import 'package:ecommerce_app/features/product/data/data_resources/local_product_data_source.dart';
 import 'package:ecommerce_app/features/product/data/data_resources/remote_product_data_source.dart';
 import 'package:ecommerce_app/features/product/domain/repositories/product_repository.dart';
+import 'package:http/http.dart' as http;
 import 'package:mockito/annotations.dart';
-
 
 @GenerateMocks(
   [
@@ -12,6 +12,7 @@ import 'package:mockito/annotations.dart';
     RemoteProductDataSource,
     LocalProductDataSource,
   ],
+  customMocks: [MockSpec<http.Client>(as: #MockHttpClient)],
 )
 
 void main(){
