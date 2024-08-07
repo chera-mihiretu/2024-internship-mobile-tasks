@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dartz/dartz.dart';
 import 'package:ecommerce_app/core/constants/constants.dart';
 import 'package:ecommerce_app/core/errors/exceptions/product_exceptions.dart';
 import 'package:ecommerce_app/features/product/data/data_resources/local_product_data_source.dart';
@@ -9,66 +10,67 @@ import 'package:mockito/mockito.dart';
 import '../../../../test_helper/test_helper_generation.mocks.dart';
 import '../../../../test_helper/testing_datas/product_testing_data.dart';
 
-void main(){
+void main() {
   late MockSharedPreferences mockSharedPreferences;
   late LocalProductDataSourceImpl localProductDataSourceImpl;
-  setUp((){
+  setUp(() {
     mockSharedPreferences = MockSharedPreferences();
-    localProductDataSourceImpl = LocalProductDataSourceImpl(mockSharedPreferences);
+    localProductDataSourceImpl =
+        LocalProductDataSourceImpl(mockSharedPreferences);
   });
 
-  group('getProduct test', (){
-
-    test('should return ProductModel if the key of the product exist on shared preferences', () async {
+  group('getProduct test', () {
+    test(
+        'should return ProductModel if the key of the product exist on shared preferences',
+        () async {
       /// arrange
-      when(
-        mockSharedPreferences.getString(any)
-      ).thenAnswer((_) => TestingDatas.readJson());
-      /// action
-      final result = await localProductDataSourceImpl.getProduct(TestingDatas.id);
+      when(mockSharedPreferences.getString(any))
+          .thenAnswer((_) => TestingDatas.readJson());
 
+      /// action
+      final result =
+          await localProductDataSourceImpl.getProduct(TestingDatas.id);
 
       /// assert
       verify(mockSharedPreferences.getString(TestingDatas.id));
 
       expect(result, TestingDatas.testDataModel);
-
     });
 
-
-    test('should return ProductModel if the key of the product exist on shared preferences', () async {
+    test(
+        'should return ProductModel if the key of the product exist on shared preferences',
+        () async {
       /// arrange
-      when(
-          mockSharedPreferences.getString(any)
-      ).thenThrow(CacheException());
+      when(mockSharedPreferences.getString(any)).thenThrow(CacheException());
+
       /// action
-      final result =  localProductDataSourceImpl.getProduct;
+      final result = localProductDataSourceImpl.getProduct;
 
       /// assert
       //verify(mockSharedPreferences.getString(TestingDatas.id));
 
-      expect(() async  => await result(TestingDatas.id), throwsA(isA<CacheException>()));
-
+      expect(() async => await result(TestingDatas.id),
+          throwsA(isA<CacheException>()));
     });
   });
 
-  group('getAllProduc test', (){
-    test('getProduct should return list of available products on shared preferences', () async {
+  group('getAllProduc test', () {
+    test(
+        'getProduct should return list of available products on shared preferences',
+        () async {
       /// arrange
 
-      when(
-        mockSharedPreferences.getString(any)
-      ).thenAnswer((invocation) {
-        if (invocation.positionalArguments[0] == AppData.SHARED_PRODUCTS){
+      when(mockSharedPreferences.getString(any)).thenAnswer((invocation) {
+        if (invocation.positionalArguments[0] == AppData.SHARED_PRODUCTS) {
           return TestingDatas.sharedPrefTest;
-        }else{
+        } else {
           return TestingDatas.readJson();
         }
       });
+
       /// action
 
       final result = await localProductDataSourceImpl.getAllProducts();
-
 
       /// assert
       verify(mockSharedPreferences.getString(AppData.SHARED_PRODUCTS));
@@ -76,61 +78,170 @@ void main(){
       expect(result, TestingDatas.productModelList);
     });
   });
-  
-  group('removeProduct test', (){
+
+  group('removeProduct test', () {
     test('Should return true when data is removed', () async {
       /// arrange
-      when(
-          mockSharedPreferences.remove(any)
-      ).thenAnswer((_) async => true);
+      when(mockSharedPreferences.remove(any)).thenAnswer((_) async => true);
+
       /// action
-      final result = await localProductDataSourceImpl.removeProduct(TestingDatas.id);
+      final result =
+          await localProductDataSourceImpl.removeProduct(TestingDatas.id);
+
       /// assert
 
       verify(mockSharedPreferences.remove(TestingDatas.id));
-      expect(result , true);
+      expect(result, true);
     });
 
     test('Should return false when the data is not found locally', () async {
       /// arrange
-      when(
-          mockSharedPreferences.remove(any)
-      ).thenAnswer((_) async => false);
+      when(mockSharedPreferences.remove(any)).thenAnswer((_) async => false);
+
       /// action
-      final result = await localProductDataSourceImpl.removeProduct(TestingDatas.id);
+      final result =
+          await localProductDataSourceImpl.removeProduct(TestingDatas.id);
+
       /// assert
 
       verify(mockSharedPreferences.remove(TestingDatas.id));
-      expect(result , false);
+      expect(result, false);
     });
   });
 
-
-  group('updateProduct Test', (){
-    test('Should return true if the value is updated, and the list update should not be visited', () async {
+  group('updateProduct Test', () {
+    test(
+        'Should return true if the value is updated, and the list update should not be visited',
+        () async {
       /// arrange
-      when(
-        mockSharedPreferences.getString(any)
-      ).thenAnswer((invocation){
-        if (invocation.positionalArguments[0] == AppData.SHARED_PRODUCTS){
-            return TestingDatas.sharedPrefTest;
-        }else{
+      when(mockSharedPreferences.getString(any)).thenAnswer((invocation) {
+        if (invocation.positionalArguments[0] == AppData.SHARED_PRODUCTS) {
+          return TestingDatas.sharedPrefTest;
+        } else {
           return TestingDatas.readJson();
         }
       });
-      when(
-        mockSharedPreferences.setString(any, any)
-      ).thenAnswer((_) async => true);
+      when(mockSharedPreferences.setString(any, any))
+          .thenAnswer((_) async => true);
+
       /// action
-      final result = await localProductDataSourceImpl.updateProduct(TestingDatas.testDataModel);
+      final result = await localProductDataSourceImpl
+          .updateProduct(TestingDatas.testDataModel);
       verify(mockSharedPreferences.getString(TestingDatas.id));
-      verify(mockSharedPreferences.setString(TestingDatas.id, json.encode(TestingDatas.testDataModel)));
+      verify(mockSharedPreferences.setString(
+          TestingDatas.id, json.encode(TestingDatas.testDataModel)));
+
       /// verify
       expect(result, true);
     });
 
-    test('Should also act accordingly when the list doesn\'t present', () async {
+    test('Should also act accordingly when the list doesn\'t present',
+        () async {
+      /// arrange
+      when(mockSharedPreferences.getString(any)).thenAnswer((invocation) {
+        if (invocation.positionalArguments[0] == AppData.SHARED_PRODUCTS) {
+          return TestingDatas.sharedPrefTest;
+        } else {
+          return null;
+        }
+      });
+      when(mockSharedPreferences.setString(any, any))
+          .thenAnswer((_) async => true);
+
+      /// action
+      final result =
+          await localProductDataSourceImpl.updateProduct(TestingDatas.testDataModel);
+
+      /// assert
+      verify(mockSharedPreferences.getString(TestingDatas.id));
+      verify(mockSharedPreferences.getString(AppData.SHARED_PRODUCTS));
+      verify(
+        mockSharedPreferences.setString(
+          AppData.SHARED_PRODUCTS,
+          json.encode(
+            {TestingDatas.id: 1},
+          ),
+        ),
+      );
+      expect(result, true);
+    });
+
+    test('Should return False if one of Them returned False', () async {
+      /// arrange
+      when(mockSharedPreferences.getString(any)).thenAnswer((invocation) {
+        if (invocation.positionalArguments[0] == AppData.SHARED_PRODUCTS) {
+          return TestingDatas.sharedPrefTest;
+        } else {
+          return null;
+        }
+      });
+      when(mockSharedPreferences.setString(any, any))
+          .thenAnswer((_) async => false);
+
+      /// action
+      final result =
+      await localProductDataSourceImpl.updateProduct(TestingDatas.testDataModel);
+
+      /// assert
+      verify(mockSharedPreferences.getString(TestingDatas.id));
+      verify(mockSharedPreferences.getString(AppData.SHARED_PRODUCTS));
+
+      verify(
+        mockSharedPreferences.setString(
+          AppData.SHARED_PRODUCTS,
+          json.encode(
+            {TestingDatas.id: 1},
+          ),
+        ),
+      );
+      expect(result, false);
 
     });
+  });
+
+  group('AddProduct should work properly', (){
+    /*
+    test('Should return true if product is added ', () async {
+      /// arrange
+      when(
+        mockSharedPreferences.setString(any, any)
+      ).thenAnswer((_) async => true);
+      when(
+        mockSharedPreferences.getString(any)
+      ).thenAnswer((_) => TestingDatas.sharedPrefTest);
+      /// action
+
+      final result = await localProductDataSourceImpl.addProduct(TestingDatas.testDataModel);
+
+
+
+      ///assert
+      verify(mockSharedPreferences.setString(TestingDatas.testDataModel.id, json.encode(TestingDatas.testDataModel.toJson())));
+      verify(mockSharedPreferences.getString(AppData.SHARED_PRODUCTS));
+      verify(mockSharedPreferences.setString(AppData.SHARED_PRODUCTS, TestingDatas.sharedPrefTest));
+      expect(result, true);
+
+
+    });
+
+    test('Should return true if product is added ', () async {
+      /// arrange
+      when(
+          mockSharedPreferences.setString(any, any)
+      ).thenAnswer((_) async => false);
+      /// action
+
+      final result = await localProductDataSourceImpl.addProduct(TestingDatas.testDataModel);
+
+
+
+      ///assert
+      verify(mockSharedPreferences.setString(TestingDatas.testDataModel.id, json.encode(TestingDatas.testDataModel.toJson())));
+
+      expect(result, false);
+
+
+    });
+    */
   });
 }

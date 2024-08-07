@@ -26,11 +26,32 @@ class LocalProductDataSourceImpl implements LocalProductDataSource {
     // TODO: implement addListOfProduct
     throw UnimplementedError();
   }
-
+  /// Simply add the product using the id and also add it into the product list
   @override
-  Future<void> addProduct(ProductModel model) {
-    // TODO: implement addProduct
-    throw UnimplementedError();
+  Future<bool> addProduct(ProductModel model) async {
+    var id = model.id;
+    if (await sharedPreferences.setString(id, json.encode(model.toJson()))){
+      var list = sharedPreferences.getString(AppData.SHARED_PRODUCTS);
+      if (list != null) {
+        /// Add the id of the product into the list
+        Map<String, dynamic> listPresent = json.decode(list);
+        listPresent[id] = 1;
+        if (!await sharedPreferences.setString(
+            AppData.SHARED_PRODUCTS, json.encode(listPresent))){
+          return false;
+        }
+        return true;
+      } else {
+        if (!await sharedPreferences.setString(
+            AppData.SHARED_PRODUCTS, json.encode({id: 1}))){
+          return false;
+        }
+        return true;
+      }
+    }else{
+      return false;
+    }
+
   }
 
 
