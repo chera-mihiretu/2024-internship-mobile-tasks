@@ -3,6 +3,7 @@ import 'package:ecommerce_app/features/product/data/data_resources/local_product
 import 'package:ecommerce_app/features/product/data/data_resources/remote_product_data_source.dart';
 import 'package:ecommerce_app/features/product/domain/repositories/product_repository.dart';
 import 'package:http/http.dart' as http;
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:mockito/annotations.dart';
 
 @GenerateMocks(
@@ -11,6 +12,7 @@ import 'package:mockito/annotations.dart';
     NetworkInfo,
     RemoteProductDataSource,
     LocalProductDataSource,
+    InternetConnectionChecker,
   ],
   customMocks: [MockSpec<http.Client>(as: #MockHttpClient)],
 )

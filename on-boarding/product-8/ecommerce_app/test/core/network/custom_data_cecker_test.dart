@@ -3,8 +3,9 @@ import 'dart:io';
 import 'package:ecommerce_app/core/constants/constants.dart';
 import 'package:ecommerce_app/core/network/custom_data_checker.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
 import 'package:http/http.dart' as http;
+import 'package:mockito/mockito.dart';
+
 import '../../test_helper/test_helper_generation.mocks.dart';
 
 void main(){
@@ -22,7 +23,7 @@ void main(){
       /// arrange
       when(
           mockHttpClient.get(Uri.parse(AppData.testUrl))
-      ).thenAnswer((_) async => http.Response("result", 200));
+      ).thenAnswer((_) async => http.Response('result', 200));
       ///action
       final result = await dataConnectionChecker.hasConnection(AppData.testUrl);
       ///assert
