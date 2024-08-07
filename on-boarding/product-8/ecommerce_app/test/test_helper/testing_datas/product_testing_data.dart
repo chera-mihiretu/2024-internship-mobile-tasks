@@ -42,7 +42,9 @@ class TestingDatas {
   ];
 
 
+  /// shared preference testing list data
 
+  static String sharedPrefTest = '{"6672752cbd218790438efdb0" : 1}';
 
 
 
