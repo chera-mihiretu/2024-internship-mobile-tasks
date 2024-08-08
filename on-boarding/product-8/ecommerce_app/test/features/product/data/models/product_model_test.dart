@@ -29,7 +29,7 @@ void main () {
   'This is test to test the toJson of product class',
     () {
       /// arrange
-      final expectedJson =json.decode(TestingDatas.readJson())['data'];
+      final expectedJson =json.decode(TestingDatas.readJson());
       /// action
       final result = TestingDatas.testDataModel.toJson();
       /// assertion

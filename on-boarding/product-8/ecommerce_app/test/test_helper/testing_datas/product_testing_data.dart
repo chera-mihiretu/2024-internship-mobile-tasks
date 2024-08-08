@@ -48,7 +48,7 @@ class TestingDatas {
 
 
 
-  static String readJson() {
+  static  String readJson() {
     String dir = Directory.current.path;
     if(dir.contains('/test')){
       dir = dir.replaceAll('/test', '');
@@ -60,8 +60,20 @@ class TestingDatas {
 
      return File(dir).readAsStringSync();
   }
+  static getAllProductResponce(){
+    String dir = Directory.current.path;
+    if(dir.contains('/test')){
+      dir = dir.replaceAll('/test', '');
+    }
+
+    dir = '$dir/test/test_helper/testing_datas/all_products_responce.json';
+
+
+
+    return File(dir).readAsStringSync();
+  }
 }
 
 void main(){
-  debugPrint(json.decode(TestingDatas.readJson()).toString());
+  debugPrint(json.decode(TestingDatas.getAllProductResponce()).toString());
 }

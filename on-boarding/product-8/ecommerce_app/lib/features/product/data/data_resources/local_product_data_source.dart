@@ -20,42 +20,67 @@ class LocalProductDataSourceImpl implements LocalProductDataSource {
     final SharedPreferences sharedPreferences;
 
   LocalProductDataSourceImpl(this.sharedPreferences);
-
+  /// Runs only if the local product list is null to make not have to much calls to
+    /// to the shared list because this process is sloow
+    ///
+    /// Return false if there is same data failure while processing
   @override
-  Future<void> addListOfProduct(List<ProductModel> models) {
-    // TODO: implement addListOfProduct
-    throw UnimplementedError();
+  Future<bool> addListOfProduct(List<ProductModel> models) async {
+    final result = sharedPreferences.getString(AppData.sharedProduct);
+    if (result == null){
+      Map<String, dynamic> list = <String, dynamic>{};
+      for (ProductModel model in models){
+        if (!await sharedPreferences.setString(model.id, json.encode(model.toJson()))){
+          if (list.isNotEmpty){
+            await sharedPreferences.setString(AppData.sharedProduct, json.encode(list));
+          }
+
+          throw CacheException();
+        }
+        list[model.id] = 1;
+      }
+      await sharedPreferences.setString(AppData.sharedProduct, json.encode(list));
+      return true;
+    }
+    throw CacheException();
   }
   /// Simply add the product using the id and also add it into the product list
+    ///
+    /// Return false if some error happened on the way
   @override
   Future<bool> addProduct(ProductModel model) async {
     var id = model.id;
+
     if (await sharedPreferences.setString(id, json.encode(model.toJson()))){
-      var list = sharedPreferences.getString(AppData.SHARED_PRODUCTS);
+
+      var list = sharedPreferences.getString(AppData.sharedProduct);
+      print("el");
       if (list != null) {
         /// Add the id of the product into the list
         Map<String, dynamic> listPresent = json.decode(list);
         listPresent[id] = 1;
         if (!await sharedPreferences.setString(
-            AppData.SHARED_PRODUCTS, json.encode(listPresent))){
-          return false;
+            AppData.sharedProduct, json.encode(listPresent))){
+
+          throw CacheException();
         }
+
         return true;
       } else {
         if (!await sharedPreferences.setString(
-            AppData.SHARED_PRODUCTS, json.encode({id: 1}))){
-          return false;
+            AppData.sharedProduct, json.encode({id: 1}))){
+          throw CacheException();
         }
         return true;
       }
     }else{
-      return false;
+      throw CacheException();
     }
 
   }
 
 
-    /// Get all product from the shared preference based on the ids that are already saved in [AppData.SHARED_PRODUCTS] key
+    /// Get all product from the shared preference based on the ids that are already saved in [AppData.sharedProduct] key
     ///
     /// Iterates over the key after decoding it to map
     ///
@@ -63,7 +88,7 @@ class LocalProductDataSourceImpl implements LocalProductDataSource {
   @override
   Future<List<ProductModel>> getAllProducts() async {
     List<ProductModel> answer = <ProductModel>[];
-    final lists = sharedPreferences.getString(AppData.SHARED_PRODUCTS);
+    final lists = sharedPreferences.getString(AppData.sharedProduct);
     if (lists != null){
         Map<String, dynamic> validList = json.decode(lists);
         for (String key in validList.keys){
@@ -99,7 +124,12 @@ class LocalProductDataSourceImpl implements LocalProductDataSource {
   @override
   Future<bool> removeProduct(String id) async {
       final result =  await sharedPreferences.remove(id);
-      return result;
+      if (result){
+        return true;
+      }else{
+        throw CacheException();
+      }
+
   }
 
     /// Update the Existing data if not add new data into shared preferences
@@ -118,29 +148,29 @@ class LocalProductDataSourceImpl implements LocalProductDataSource {
       if (result != null) {
 
         if (!await sharedPreferences.setString(id, json.encode(model.toJson()))){
-          return false;
+          throw CacheException();
         }
       } else {
         /// Extracting the list of local products
-        var list = sharedPreferences.getString(AppData.SHARED_PRODUCTS);
+        var list = sharedPreferences.getString(AppData.sharedProduct);
         if (list != null) {
           /// Add the id of the product into the list
           Map<String, dynamic> listPresent = json.decode(list);
           listPresent[id] = 1;
           if (!await sharedPreferences.setString(
-              AppData.SHARED_PRODUCTS, json.encode(listPresent))){
-            return false;
+              AppData.sharedProduct, json.encode(listPresent))){
+            throw CacheException();
           }
         } else {
           if (!await sharedPreferences.setString(
-              AppData.SHARED_PRODUCTS, json.encode({id: 1}))){
-            return false;
+              AppData.sharedProduct, json.encode({id: 1}))){
+            throw CacheException();
           }
         }
       }
     } on Exception {
       /// if the json decode failed in the process
-      return false;
+      throw CacheException();
     }
     return true;
   }
