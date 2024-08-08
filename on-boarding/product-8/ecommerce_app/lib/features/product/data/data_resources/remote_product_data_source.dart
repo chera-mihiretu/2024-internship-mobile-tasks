@@ -117,5 +117,15 @@ class RemoteProductDataSourceImp implements RemoteProductDataSource {
     }
   }
 
+  Future<int> getStatus(String requestType, String url, [Map<String, String>? data]) async {
+    Map<String, dynamic> typeMap = {
+      AppData.post : client.post,
+      AppData.get : client.get,
+      AppData.delete : client.delete,
+      AppData.put : client.put
+
+
+    };
+  }
 
 }
