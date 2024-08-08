@@ -24,20 +24,10 @@ class RemoteProductDataSourceImp implements RemoteProductDataSource {
   RemoteProductDataSourceImp(this.client);
 
   @override
-  Future<int> deleteProduct(String id) async {
-    try {
-      final result = await client.delete(
-          Uri.parse('${AppData.allProductUrl}/$id'),
-          headers: AppData.jsonHeader);
-      if (result.statusCode == 200) {
-        return 1;
-      } else {
-        throw ServerException();
-      }
-    } on SocketException {
-      throw ServerException();
-    }
-  }
+  Future<int> deleteProduct(String id) =>
+      executeQuery(AppData.delete, '${AppData.allProductUrl}/$id');
+
+
 
   @override
   Future<List<ProductModel>> getAllProducts() async {
@@ -76,37 +66,44 @@ class RemoteProductDataSourceImp implements RemoteProductDataSource {
   }
 
   @override
-  Future<int> insertProduct(ProductModel productModel) async {
-    try {
-      final result = await client.post(Uri.parse(AppData.allProductUrl),
-          body: {
-            'image': productModel.imageUrl,
-            'name': productModel.name,
-            'description': productModel.description,
-            'price': '${productModel.price}',
-          },
-          headers: AppData.jsonHeader);
-      if (result.statusCode == 200) {
-        return 1;
-      } else {
-        throw ServerException();
-      }
-    } on SocketException {
-      throw ServerException();
-    }
-  }
+  Future<int> insertProduct(ProductModel productModel) =>
+      executeQuery(AppData.post, AppData.allProductUrl, {
+        'image': productModel.imageUrl,
+        'name': productModel.name,
+        'description': productModel.description,
+        'price': '${productModel.price}',
+      },);
+
 
   @override
-  Future<int> updateProduct(ProductModel productModel) async {
+  Future<int> updateProduct(ProductModel productModel) =>
+      executeQuery(AppData.put, '${AppData.allProductUrl}/${productModel.id}', {
+        'name': productModel.name,
+        'description': productModel.description,
+        'price': '${productModel.price}',
+      },);
+
+  Future<int> executeQuery(String requestType, String url,
+      [Map<String, String>? data]) async {
+    Map<String, dynamic> typeMap = {
+      AppData.post: client.post,
+      AppData.get: client.get,
+      AppData.delete: client.delete,
+      AppData.put: client.put
+    };
+
     try {
-      final result = await client.put(
-          Uri.parse('${AppData.allProductUrl}/${productModel.id}'),
-          body: {
-            'name': productModel.name,
-            'description': productModel.description,
-            'price': '${productModel.price}',
-          },
-          headers: AppData.jsonHeader);
+      late final result;
+      if (data != null) {
+        result = await typeMap[requestType](
+            Uri.parse(url),
+            body: data,
+            headers: AppData.jsonHeader);
+      } else {
+        result = await typeMap[requestType](
+            Uri.parse(url),
+            headers: AppData.jsonHeader);
+      }
       if (result.statusCode == 200) {
         return 1;
       } else {
@@ -115,17 +112,6 @@ class RemoteProductDataSourceImp implements RemoteProductDataSource {
     } on SocketException {
       throw ServerException();
     }
-  }
-
-  Future<int> getStatus(String requestType, String url, [Map<String, String>? data]) async {
-    Map<String, dynamic> typeMap = {
-      AppData.post : client.post,
-      AppData.get : client.get,
-      AppData.delete : client.delete,
-      AppData.put : client.put
-
-
-    };
   }
 
 }
