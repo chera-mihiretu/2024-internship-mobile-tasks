@@ -60,7 +60,9 @@ class TestingDatas {
 
      return File(dir).readAsStringSync();
   }
-  static getAllProductResponce(){
+
+  /// Below data's are data that are used as exact data from the api
+  static String  getAllProductResponce(){
     String dir = Directory.current.path;
     if(dir.contains('/test')){
       dir = dir.replaceAll('/test', '');
@@ -72,8 +74,23 @@ class TestingDatas {
 
     return File(dir).readAsStringSync();
   }
+
+
+  static String getSingleProduct(){
+    String dir = Directory.current.path;
+    if(dir.contains('/test')){
+      dir = dir.replaceAll('/test', '');
+    }
+
+    dir = '$dir/test/test_helper/testing_datas/single_api_responce.json';
+
+
+
+    return File(dir).readAsStringSync();
+  }
+  static const String apiId = '6672776eb905525c145fe0bb';
 }
 
 void main(){
-  debugPrint(json.decode(TestingDatas.getAllProductResponce()).toString());
+  debugPrint(json.decode(TestingDatas.getSingleProduct()).toString());
 }
