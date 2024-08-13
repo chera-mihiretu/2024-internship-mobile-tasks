@@ -19,7 +19,17 @@ class LoadedAllProductState extends ProductStates {
   const LoadedAllProductState({required this.data}) : super(data);
 }
 
+class LoadedSingleProductState extends ProductStates {
+  final ProductEntity productEntity;
+  const LoadedSingleProductState({required this.productEntity});
+}
+
 class ErrorState extends ProductStates {
   final String message;
   ErrorState({required this.message}) : super([message]);
+}
+
+class SuccessfullState extends ProductStates {
+  final String message;
+  SuccessfullState({required this.message}) : super([message]);
 }

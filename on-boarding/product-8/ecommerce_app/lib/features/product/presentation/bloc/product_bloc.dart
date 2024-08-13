@@ -1,6 +1,8 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../domain/repositories/product_repository.dart';
+import '../../../../core/constants/constants.dart';
+import '../../domain/entities/product.dart';
 import '../../domain/usecases/delete_product_usecase.dart';
 import '../../domain/usecases/get_all_products_usecase.dart';
 import '../../domain/usecases/get_product_usecase.dart';
@@ -22,24 +24,69 @@ class ProductBloc extends Bloc<ProductEvents, ProductStates> {
     required this.insertProductUseCase,
     required this.updateProductUsecase,
   }) : super(InitialState()) {
-    on<GetSingleProductEvents>((event, emit) {
-      // TODO : implement this
+    on<GetSingleProductEvents>((event, emit) async {
+      emit(LoadingState());
+      final result = await getProductUseCase.execute(event.id);
+      result.fold((failure) {
+        emit(ErrorState(message: failure.message));
+      }, (data) {
+        emit(LoadedSingleProductState(productEntity: data));
+      });
     });
 
-    on<GetSingleProductEvents>((event, emit) {
-      // TODO : implement this
+    on<LoadAllProductEvents>((event, emit) async {
+      emit(LoadingState());
+      final result = await getAllProductUseCase.execute();
+      result.fold((failure) {
+        emit(ErrorState(message: failure.message));
+      }, (data) {
+        emit(LoadedAllProductState(data: data));
+      });
     });
 
-    on<CreateProductEvent>((event, emit) {
-      // TODO : implement this
+    on<InsertProductEvent>((event, emit) async {
+      emit(LoadingState());
+      ProductEntity entity = ProductEntity(
+        id: '',
+        name: event.name,
+        description: event.description,
+        price: event.price,
+        imageUrl: event.imageUrl,
+      );
+      final result = await insertProductUseCase.execute(entity);
+
+      result.fold((failure) {
+        emit(ErrorState(message: failure.message));
+      }, (data) {
+        emit(SuccessfullState(message: AppData.getMessage(data)));
+      });
     });
 
-    on<UpdateProductEvent>((event, emit) {
-      // TODO : implement this
+    on<UpdateProductEvent>((event, emit) async {
+      emit(LoadingState());
+      ProductEntity entity = ProductEntity(
+        id: event.id,
+        name: event.name,
+        description: event.description,
+        price: event.price,
+        imageUrl: '',
+      );
+      final result = await updateProductUsecase.execute(entity);
+      result.fold((failure) {
+        emit(ErrorState(message: failure.message));
+      }, (data) {
+        emit(SuccessfullState(message: AppData.getMessage(data)));
+      });
     });
 
-    on<DeleteProductEvent>((event, emit) {
-      // TODO : implement this
+    on<DeleteProductEvent>((event, emit) async {
+      emit(LoadingState());
+      final result = await deleteProductUseCase.execute(event.id);
+      result.fold((failure) {
+        emit(ErrorState(message: failure.message));
+      }, (data) {
+        emit(SuccessfullState(message: AppData.getMessage(data)));
+      });
     });
   }
 }

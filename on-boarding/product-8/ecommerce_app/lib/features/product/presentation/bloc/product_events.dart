@@ -34,13 +34,13 @@ class DeleteProductEvent extends ProductEvents {
   DeleteProductEvent({required this.id});
 }
 
-class CreateProductEvent extends ProductEvents {
+class InsertProductEvent extends ProductEvents {
   final String name;
   final String description;
   final int price;
   final String imageUrl;
 
-  CreateProductEvent({
+  InsertProductEvent({
     required this.name,
     required this.description,
     required this.price,

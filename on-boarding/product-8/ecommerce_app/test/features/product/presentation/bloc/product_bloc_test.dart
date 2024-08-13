@@ -2,7 +2,6 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:ecommerce_app/core/constants/constants.dart';
 import 'package:ecommerce_app/core/errors/failures/failure.dart';
-import 'package:ecommerce_app/features/product/domain/usecases/get_all_products_usecase.dart';
 import 'package:ecommerce_app/features/product/presentation/bloc/product_bloc.dart';
 import 'package:ecommerce_app/features/product/presentation/bloc/product_events.dart';
 import 'package:ecommerce_app/features/product/presentation/bloc/product_states.dart';
@@ -61,28 +60,28 @@ void main() {
     blocTest<ProductBloc, ProductStates>(
       'Should return server error state  when failed',
       build: () {
-        when(mockGetProductUseCase.execute(any)).thenAnswer(
-            (_) async => const Left(ServerFailure(AppData.serverError)));
+        when(mockGetProductUseCase.execute(any)).thenAnswer((_) async =>
+            Left(ServerFailure(AppData.getMessage(AppData.serverError))));
         return productBloc;
       },
       act: (bloc) => bloc.add(GetSingleProductEvents(id: TestingDatas.id)),
       expect: () => [
         LoadingState(),
-        ErrorState(message: AppData.serverError),
+        ErrorState(message: AppData.getMessage(AppData.serverError)),
       ],
     );
 
     blocTest<ProductBloc, ProductStates>(
       'Should return cache error when no network',
       build: () {
-        when(mockGetProductUseCase.execute(any)).thenAnswer(
-            (_) async => const Left(CacheFailure(AppData.cacheError)));
+        when(mockGetProductUseCase.execute(any)).thenAnswer((_) async =>
+            Left(CacheFailure(AppData.getMessage(AppData.cacheError))));
         return productBloc;
       },
       act: (bloc) => bloc.add(GetSingleProductEvents(id: TestingDatas.id)),
       expect: () => [
         LoadingState(),
-        ErrorState(message: AppData.cacheError),
+        ErrorState(message: AppData.getMessage(AppData.cacheError)),
       ],
     );
   });
@@ -105,32 +104,38 @@ void main() {
     blocTest<ProductBloc, ProductStates>(
       'Should return Server error  when failed',
       build: () {
-        when(mockGetAllProductUseCase.execute()).thenAnswer(
-            (_) async => const Left(ServerFailure(AppData.serverError)));
+        when(mockGetAllProductUseCase.execute()).thenAnswer((_) async =>
+            Left(ServerFailure(AppData.getMessage(AppData.serverError))));
         return productBloc;
       },
       act: (bloc) => bloc.add(LoadAllProductEvents()),
-      expect: () => [LoadingState(), ErrorState(message: AppData.serverError)],
+      expect: () => [
+        LoadingState(),
+        ErrorState(message: AppData.getMessage(AppData.serverError))
+      ],
     );
 
     blocTest<ProductBloc, ProductStates>(
       'Should return cache error when there is caching problem',
       build: () {
-        when(mockGetAllProductUseCase.execute()).thenAnswer(
-            (_) async => const Left(CacheFailure(AppData.cacheError)));
+        when(mockGetAllProductUseCase.execute()).thenAnswer((_) async =>
+            Left(CacheFailure(AppData.getMessage(AppData.cacheError))));
         return productBloc;
       },
       act: (bloc) => bloc.add(LoadAllProductEvents()),
-      expect: () => [LoadingState(), ErrorState(message: AppData.cacheError)],
+      expect: () => [
+        LoadingState(),
+        ErrorState(message: AppData.getMessage(AppData.cacheError))
+      ],
     );
   });
 
   group('insert Product test', () {
     blocTest<ProductBloc, ProductStates>(
-      'Should return int 1 when success',
+      'Should return int updated success code  when success',
       build: () {
         when(mockInsertProductUseCase.execute(any))
-            .thenAnswer((_) async => const Right(1));
+            .thenAnswer((_) async => const Right(AppData.successInsert));
         return productBloc;
       },
       act: (bloc) => bloc.add(InsertProductEvent(
@@ -138,7 +143,161 @@ void main() {
           imageUrl: TestingDatas.testDataEntity.imageUrl,
           price: TestingDatas.testDataEntity.price,
           description: TestingDatas.testDataEntity.description)),
-      expect: () => [LoadingState(), (message: AppData.successInsert)],
+      expect: () => [
+        LoadingState(),
+        SuccessfullState(message: AppData.message[AppData.successInsert]!)
+      ],
+    );
+    blocTest<ProductBloc, ProductStates>(
+      'Should return int 1 when success',
+      build: () {
+        when(mockInsertProductUseCase.execute(any)).thenAnswer((_) async =>
+            Left(ServerFailure(AppData.getMessage(AppData.serverError))));
+        return productBloc;
+      },
+      act: (bloc) => bloc.add(InsertProductEvent(
+          name: TestingDatas.testDataEntity.name,
+          imageUrl: TestingDatas.testDataEntity.imageUrl,
+          price: TestingDatas.testDataEntity.price,
+          description: TestingDatas.testDataEntity.description)),
+      expect: () => [
+        LoadingState(),
+        ErrorState(
+          message: AppData.getMessage(AppData.serverError),
+        ),
+      ],
+    );
+    blocTest<ProductBloc, ProductStates>(
+      'Should return  connection error when no network',
+      build: () {
+        when(mockInsertProductUseCase.execute(any)).thenAnswer((_) async =>
+            Left(ConnectionFailure(
+                AppData.getMessage(AppData.connectionError))));
+        return productBloc;
+      },
+      act: (bloc) => bloc.add(InsertProductEvent(
+          name: TestingDatas.testDataEntity.name,
+          imageUrl: TestingDatas.testDataEntity.imageUrl,
+          price: TestingDatas.testDataEntity.price,
+          description: TestingDatas.testDataEntity.description)),
+      expect: () => [
+        LoadingState(),
+        ErrorState(
+          message: AppData.getMessage(AppData.connectionError),
+        ),
+      ],
+    );
+  });
+
+  group('update Product test', () {
+    blocTest<ProductBloc, ProductStates>(
+      'Should update and return  update success code  when success',
+      build: () {
+        when(mockUpdateProductUsecase.execute(any))
+            .thenAnswer((_) async => const Right(AppData.successUpdate));
+        return productBloc;
+      },
+      act: (bloc) => bloc.add(UpdateProductEvent(
+          id: TestingDatas.testDataEntity.id,
+          name: TestingDatas.testDataEntity.name,
+          price: TestingDatas.testDataEntity.price,
+          description: TestingDatas.testDataEntity.description)),
+      expect: () => [
+        LoadingState(),
+        SuccessfullState(message: AppData.message[AppData.successUpdate]!)
+      ],
+    );
+    blocTest<ProductBloc, ProductStates>(
+      'Should return server failure message when there is no connection',
+      build: () {
+        when(mockUpdateProductUsecase.execute(any)).thenAnswer((_) async =>
+            Left(ServerFailure(AppData.getMessage(AppData.serverError))));
+        return productBloc;
+      },
+      act: (bloc) => bloc.add(UpdateProductEvent(
+          id: TestingDatas.testDataEntity.id,
+          name: TestingDatas.testDataEntity.name,
+          price: TestingDatas.testDataEntity.price,
+          description: TestingDatas.testDataEntity.description)),
+      expect: () => [
+        LoadingState(),
+        ErrorState(
+          message: AppData.getMessage(AppData.serverError),
+        ),
+      ],
+    );
+    blocTest<ProductBloc, ProductStates>(
+      'Should return  connection error when no network',
+      build: () {
+        when(mockUpdateProductUsecase.execute(any)).thenAnswer((_) async =>
+            Left(ConnectionFailure(
+                AppData.getMessage(AppData.connectionError))));
+        return productBloc;
+      },
+      act: (bloc) => bloc.add(UpdateProductEvent(
+          id: TestingDatas.testDataEntity.id,
+          name: TestingDatas.testDataEntity.name,
+          price: TestingDatas.testDataEntity.price,
+          description: TestingDatas.testDataEntity.description)),
+      expect: () => [
+        LoadingState(),
+        ErrorState(
+          message: AppData.getMessage(AppData.connectionError),
+        ),
+      ],
+    );
+  });
+
+  group('delte Product test', () {
+    blocTest<ProductBloc, ProductStates>(
+      'Should delete and return  update success code  when success',
+      build: () {
+        when(mockDeleteProductUseCase.execute(any))
+            .thenAnswer((_) async => const Right(AppData.successDelete));
+        return productBloc;
+      },
+      act: (bloc) => bloc.add(DeleteProductEvent(
+        id: TestingDatas.testDataEntity.id,
+      )),
+      expect: () => [
+        LoadingState(),
+        SuccessfullState(message: AppData.message[AppData.successDelete]!)
+      ],
+    );
+    blocTest<ProductBloc, ProductStates>(
+      'Should return server failure message when there is no connection',
+      build: () {
+        when(mockDeleteProductUseCase.execute(any)).thenAnswer((_) async =>
+            Left(ServerFailure(AppData.getMessage(AppData.serverError))));
+        return productBloc;
+      },
+      act: (bloc) => bloc.add(DeleteProductEvent(
+        id: TestingDatas.testDataEntity.id,
+      )),
+      expect: () => [
+        LoadingState(),
+        ErrorState(
+          message: AppData.getMessage(AppData.serverError),
+        ),
+      ],
+    );
+    blocTest<ProductBloc, ProductStates>(
+      'Should return  connection error when no network',
+      build: () {
+        when(mockDeleteProductUseCase.execute(any)).thenAnswer((_) async =>
+            Left(ConnectionFailure(
+                AppData.getMessage(AppData.connectionError))));
+        return productBloc;
+      },
+      act: (bloc) => bloc.add(DeleteProductEvent(
+        id: TestingDatas.testDataEntity.id,
+      )),
+      expect: () => [
+        LoadingState(),
+        ErrorState(
+          message: AppData.getMessage(AppData.connectionError),
+        ),
+      ],
     );
   });
 }

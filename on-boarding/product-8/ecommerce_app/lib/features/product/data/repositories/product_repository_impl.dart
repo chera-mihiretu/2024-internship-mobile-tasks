@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
+import '../../../../core/constants/constants.dart';
 import '../../../../core/errors/exceptions/product_exceptions.dart';
 import '../../../../core/errors/failures/failure.dart';
 import '../../../../core/network/network_info.dart';
 import '../../domain/entities/product.dart';
-
 
 import '../../domain/repositories/product_repository.dart';
 import '../data_resources/local_product_data_source.dart';
@@ -21,8 +21,6 @@ class ProductRepositoryImpl implements ProductRepository {
     required this.networkInfo,
   });
 
-
-
   /// Deletes a product from list base on the [id]
   /// Returns [ServerFailure] if the request failed
   ///
@@ -30,18 +28,18 @@ class ProductRepositoryImpl implements ProductRepository {
   @override
   Future<Either<Failure, int>> deleteProduct(String id) async {
     final network = await networkInfo.isConnected;
-    if (network){
-      try{
+    if (network) {
+      try {
         final result = await remoteProductDataSource.deleteProduct(id);
         localProductDataSource.removeProduct(id);
         return Right(result);
-      }on ServerException {
-        return Left(ServerFailure());
+      } on ServerException {
+        return Left(ServerFailure(AppData.getMessage(AppData.serverError)));
       }
-    } else{
-      return Left(ConnectionFailure());
+    } else {
+      return Left(
+          ConnectionFailure(AppData.getMessage(AppData.connectionError)));
     }
-
   }
 
   /// Retreive data from if the device is online
@@ -52,21 +50,20 @@ class ProductRepositoryImpl implements ProductRepository {
   @override
   Future<Either<Failure, List<ProductEntity>>> getAllProducts() async {
     final network = await networkInfo.isConnected;
-    if (network){
-      try{
+    if (network) {
+      try {
         final result = await remoteProductDataSource.getAllProducts();
         localProductDataSource.addListOfProduct(result);
         return Right(ProductModel.allToEntity(result));
       } on ServerException {
-        return Left(ServerFailure());
+        return Left(ServerFailure(AppData.getMessage(AppData.serverError)));
       }
-    }else{
-
+    } else {
       try {
         final result = await localProductDataSource.getAllProducts();
         return Right(ProductModel.allToEntity(result));
       } on CacheException {
-        return Left(CacheFailure());
+        return Left(CacheFailure(AppData.getMessage(AppData.cacheError)));
       }
     }
   }
@@ -80,23 +77,22 @@ class ProductRepositoryImpl implements ProductRepository {
   Future<Either<Failure, ProductEntity>> getProduct(String id) async {
     final network = await networkInfo.isConnected;
     if (network) {
-      try{
+      try {
         final result = await remoteProductDataSource.getProduct(id);
         localProductDataSource.addProduct(result);
         return Right(result.toEntity());
       } on ServerException {
-        return Left(ServerFailure());
+        return Left(ServerFailure(AppData.getMessage(AppData.serverError)));
       }
-    }else{
-      try{
+    } else {
+      try {
         final result = await localProductDataSource.getProduct(id);
         return Right(result.toEntity());
       } on CacheException {
-        return Left(CacheFailure());
+        return Left(CacheFailure(AppData.getMessage(AppData.cacheError)));
       }
     }
   }
-
 
   /// Insert provided product into a database
   /// Returns [ServerFailure] if the request is failed
@@ -106,19 +102,19 @@ class ProductRepositoryImpl implements ProductRepository {
   Future<Either<Failure, int>> insertProduct(ProductEntity product) async {
     final network = await networkInfo.isConnected;
     if (network) {
-      try{
+      try {
         final result = await remoteProductDataSource
             .insertProduct(ProductModel.fromEntity(product));
         localProductDataSource.addProduct(ProductModel.fromEntity(product));
         return Right(result);
       } on ServerException {
-        return Left(ServerFailure());
+        return Left(ServerFailure(AppData.getMessage(AppData.serverError)));
       }
-    }else{
-      return Left(ConnectionFailure());
+    } else {
+      return Left(
+          ConnectionFailure(AppData.getMessage(AppData.connectionError)));
     }
   }
-
 
   /// Update the product based on the id inside the provided product
   /// Returns [ServerFailure] if the request is failed on the way
@@ -128,16 +124,17 @@ class ProductRepositoryImpl implements ProductRepository {
   Future<Either<Failure, int>> updateProduct(ProductEntity product) async {
     final network = await networkInfo.isConnected;
     if (network) {
-      try{
+      try {
         final result = await remoteProductDataSource
             .updateProduct(ProductModel.fromEntity(product));
         localProductDataSource.updateProduct(ProductModel.fromEntity(product));
         return Right(result);
       } on ServerException {
-        return Left(ServerFailure());
+        return Left(ServerFailure(AppData.getMessage(AppData.serverError)));
       }
-    }else{
-      return Left(ConnectionFailure());
+    } else {
+      return Left(
+          ConnectionFailure(AppData.getMessage(AppData.connectionError)));
     }
   }
 }
