@@ -13,6 +13,7 @@ import 'features/product/domain/usecases/get_all_products_usecase.dart';
 import 'features/product/domain/usecases/get_product_usecase.dart';
 import 'features/product/domain/usecases/insert_product_usecase.dart';
 import 'features/product/domain/usecases/update_product_usecase.dart';
+import 'features/product/presentation/bloc/product_bloc.dart';
 
 final locator = GetIt.instance;
 
@@ -29,7 +30,7 @@ void init() {
   // Remote Data
   locator.registerLazySingleton(() => RemoteProductDataSourceImp(locator()));
   locator.registerLazySingleton(() => LocalProductDataSourceImpl(locator()));
-  // Use cases
+  // Repositories
   locator.registerLazySingleton<ProductRepository>(
     () => ProductRepositoryImpl(
       remoteProductDataSource: locator(),
@@ -37,10 +38,20 @@ void init() {
       networkInfo: locator(),
     ),
   );
-
+  // usecases
   locator.registerLazySingleton(() => UpdateProductUsecase(locator()));
   locator.registerLazySingleton(() => InsertProductUseCase(locator()));
   locator.registerLazySingleton(() => DeleteProductUseCase(locator()));
   locator.registerLazySingleton(() => GetAllProductUseCase(locator()));
   locator.registerLazySingleton(() => GetProductUseCase(locator()));
+  // bloc
+  locator.registerFactory(
+    () => ProductBloc(
+      getAllProductUseCase: locator(),
+      deleteProductUseCase: locator(),
+      getProductUseCase: locator(),
+      insertProductUseCase: locator(),
+      updateProductUsecase: locator(),
+    ),
+  );
 }
