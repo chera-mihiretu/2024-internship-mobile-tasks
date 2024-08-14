@@ -1,7 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-import '../../domain/entities/product.dart';
-
 abstract class ProductEvents extends Equatable {
   @override
   List<Object?> get props => [];

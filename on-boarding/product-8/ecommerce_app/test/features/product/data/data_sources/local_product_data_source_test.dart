@@ -344,7 +344,7 @@ void main() {
           .thenAnswer((_) async => true);
 
       /// action
-      final result = await localProductDataSourceImpl.addListOfProduct;
+      final result =  localProductDataSourceImpl.addListOfProduct;
 
       /// assert
       expect(() async => result(TestingDatas.productModelList),
@@ -363,7 +363,7 @@ void main() {
           .thenAnswer((_) async => true);
 
       /// action
-      final result = await localProductDataSourceImpl.addListOfProduct;
+      final result =  localProductDataSourceImpl.addListOfProduct;
 
       /// assert
       expect(() async => result(TestingDatas.productModelList),
