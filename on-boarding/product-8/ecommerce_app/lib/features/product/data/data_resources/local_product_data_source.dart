@@ -28,6 +28,7 @@ class LocalProductDataSourceImpl implements LocalProductDataSource {
   @override
   Future<bool> addListOfProduct(List<ProductModel> models) async {
     final result = sharedPreferences.getString(AppData.sharedProduct);
+
     if (result == null) {
       Map<String, dynamic> list = <String, dynamic>{};
       for (ProductModel model in models) {
@@ -42,11 +43,14 @@ class LocalProductDataSourceImpl implements LocalProductDataSource {
         }
         list[model.id] = 1;
       }
+
       await sharedPreferences.setString(
           AppData.sharedProduct, json.encode(list));
+
+      return true;
+    } else {
       return true;
     }
-    throw CacheException();
   }
 
   /// Simply add the product using the id and also add it into the product list

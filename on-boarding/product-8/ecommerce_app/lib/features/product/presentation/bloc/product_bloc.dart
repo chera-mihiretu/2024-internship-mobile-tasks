@@ -35,7 +35,9 @@ class ProductBloc extends Bloc<ProductEvents, ProductStates> {
 
     on<LoadAllProductEvents>((event, emit) async {
       emit(LoadingState());
+
       final result = await getAllProductUseCase.execute();
+
       result.fold((failure) {
         emit(ErrorState(message: failure.message));
       }, (data) {

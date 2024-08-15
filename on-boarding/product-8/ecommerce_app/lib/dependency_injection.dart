@@ -17,19 +17,22 @@ import 'features/product/presentation/bloc/product_bloc.dart';
 
 final locator = GetIt.instance;
 
-void init() {
+Future<void> init() async {
   //! External Instances
+
   locator.registerLazySingleton(() => http.Client());
-  locator.registerLazySingleton(() => SharedPreferences.getInstance);
+
   //! Core instances
   locator.registerLazySingleton(() => InternetConnectionChecker());
-  locator.registerLazySingleton(() => NetworkInfoImpl(locator()));
+  locator.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(locator()));
   //! Features of app
 
   // data layers
   // Remote Data
-  locator.registerLazySingleton(() => RemoteProductDataSourceImp(locator()));
-  locator.registerLazySingleton(() => LocalProductDataSourceImpl(locator()));
+  locator.registerLazySingleton<RemoteProductDataSource>(
+      () => RemoteProductDataSourceImp(locator()));
+  locator.registerLazySingleton<LocalProductDataSource>(
+      () => LocalProductDataSourceImpl(locator()));
   // Repositories
   locator.registerLazySingleton<ProductRepository>(
     () => ProductRepositoryImpl(
@@ -54,4 +57,8 @@ void init() {
       updateProductUsecase: locator(),
     ),
   );
+  //! Shared pref
+
+  final sharedPreferences = await SharedPreferences.getInstance();
+  locator.registerLazySingleton(() => sharedPreferences);
 }

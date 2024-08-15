@@ -42,4 +42,7 @@ class AppData {
   static String getMessage(int code) {
     return message[code]!;
   }
+
+  static const String imageUrl =
+      'https://static.nike.com/a/images/f_auto/dpr_3.0,cs_srgb/w_363,c_limit/83e721fb-4f3f-44d5-ae11-5ef19006fd93/best-running-shoes-for-walking-by-nike.jpg';
 }

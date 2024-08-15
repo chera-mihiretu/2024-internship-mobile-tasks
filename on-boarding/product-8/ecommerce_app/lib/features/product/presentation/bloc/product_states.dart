@@ -15,6 +15,8 @@ class InitialState extends ProductStates {}
 class LoadingState extends ProductStates {}
 
 class LoadedAllProductState extends ProductStates {
+  @override
+  // ignore: overridden_fields
   final List<ProductEntity> data;
   const LoadedAllProductState({required this.data}) : super(data);
 }

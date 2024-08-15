@@ -116,6 +116,7 @@ class RemoteProductDataSourceImp implements RemoteProductDataSource {
       [String? id]) async {
     try {
       late http.Response result;
+
       if (id != null) {
         result = await client.get(Uri.parse('${AppData.baseUrl}/$id'),
             headers: AppData.jsonHeader);
@@ -129,9 +130,11 @@ class RemoteProductDataSourceImp implements RemoteProductDataSource {
         } else {
           List<ProductModel> finalResult = <ProductModel>[];
           Map<String, dynamic> jsonModel = json.decode(result.body);
+
           for (Map<String, dynamic> jsonModel in jsonModel['data']) {
             finalResult.add(ProductModel.fromJson(jsonModel));
           }
+
           return finalResult;
         }
       } else {

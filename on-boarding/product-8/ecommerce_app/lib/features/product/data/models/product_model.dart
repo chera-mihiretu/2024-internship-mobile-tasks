@@ -14,7 +14,7 @@ class ProductModel extends ProductEntity {
       id: json['id'],
       name: json['name'],
       description: json['description'],
-      price: json['price'],
+      price: json['price'].toInt(),
       imageUrl: json['imageUrl'],
     );
   }
@@ -48,12 +48,12 @@ class ProductModel extends ProductEntity {
       imageUrl: imageUrl,
     );
   }
+
   static List<ProductEntity> allToEntity(List<ProductModel> models) {
     List<ProductEntity> answer = <ProductEntity>[];
-    for(int i = 0; i < models.length; i ++ ){
+    for (int i = 0; i < models.length; i++) {
       answer.add(models[i].toEntity());
     }
     return answer;
-
   }
 }

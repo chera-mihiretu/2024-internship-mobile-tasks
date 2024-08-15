@@ -31,10 +31,12 @@ class ProductRepositoryImpl implements ProductRepository {
     if (network) {
       try {
         final result = await remoteProductDataSource.deleteProduct(id);
-        localProductDataSource.removeProduct(id);
+        await localProductDataSource.removeProduct(id);
         return Right(result);
       } on ServerException {
         return Left(ServerFailure(AppData.getMessage(AppData.serverError)));
+      } on CacheException {
+        return Left(CacheFailure(AppData.getMessage(AppData.cacheError)));
       }
     } else {
       return Left(
@@ -53,10 +55,13 @@ class ProductRepositoryImpl implements ProductRepository {
     if (network) {
       try {
         final result = await remoteProductDataSource.getAllProducts();
-        localProductDataSource.addListOfProduct(result);
+
+        await localProductDataSource.addListOfProduct(result);
         return Right(ProductModel.allToEntity(result));
       } on ServerException {
         return Left(ServerFailure(AppData.getMessage(AppData.serverError)));
+      } on CacheException {
+        return Left(CacheFailure(AppData.getMessage(AppData.cacheError)));
       }
     } else {
       try {
@@ -79,10 +84,12 @@ class ProductRepositoryImpl implements ProductRepository {
     if (network) {
       try {
         final result = await remoteProductDataSource.getProduct(id);
-        localProductDataSource.addProduct(result);
+        await localProductDataSource.addProduct(result);
         return Right(result.toEntity());
       } on ServerException {
         return Left(ServerFailure(AppData.getMessage(AppData.serverError)));
+      } on CacheException {
+        return Left(CacheFailure(AppData.getMessage(AppData.cacheError)));
       }
     } else {
       try {
@@ -105,10 +112,13 @@ class ProductRepositoryImpl implements ProductRepository {
       try {
         final result = await remoteProductDataSource
             .insertProduct(ProductModel.fromEntity(product));
-        localProductDataSource.addProduct(ProductModel.fromEntity(product));
+        await localProductDataSource
+            .addProduct(ProductModel.fromEntity(product));
         return Right(result);
       } on ServerException {
         return Left(ServerFailure(AppData.getMessage(AppData.serverError)));
+      } on CacheException {
+        return Left(CacheFailure(AppData.getMessage(AppData.cacheError)));
       }
     } else {
       return Left(
@@ -127,10 +137,13 @@ class ProductRepositoryImpl implements ProductRepository {
       try {
         final result = await remoteProductDataSource
             .updateProduct(ProductModel.fromEntity(product));
-        localProductDataSource.updateProduct(ProductModel.fromEntity(product));
+        await localProductDataSource
+            .updateProduct(ProductModel.fromEntity(product));
         return Right(result);
       } on ServerException {
         return Left(ServerFailure(AppData.getMessage(AppData.serverError)));
+      } on CacheFailure {
+        return Left(CacheFailure(AppData.getMessage(AppData.cacheError)));
       }
     } else {
       return Left(

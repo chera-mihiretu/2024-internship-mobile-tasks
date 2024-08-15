@@ -332,7 +332,8 @@ void main() {
       expect(result, true);
     });
 
-    test('Should not add to the sharepref when product list already exist',
+    test(
+        'Should not add to the sharepref when product list already exist though should return True',
         () async {
       /// arrange
       when(mockSharedPreferences.getString(any))
@@ -344,11 +345,11 @@ void main() {
           .thenAnswer((_) async => true);
 
       /// action
-      final result =  localProductDataSourceImpl.addListOfProduct;
+      final result = await localProductDataSourceImpl
+          .addListOfProduct(TestingDatas.productModelList);
 
       /// assert
-      expect(() async => result(TestingDatas.productModelList),
-          throwsA(isA<CacheException>()));
+      expect(result, true);
       verify(mockSharedPreferences.getString(AppData.sharedProduct));
     });
 
@@ -363,7 +364,7 @@ void main() {
           .thenAnswer((_) async => true);
 
       /// action
-      final result =  localProductDataSourceImpl.addListOfProduct;
+      final result = localProductDataSourceImpl.addListOfProduct;
 
       /// assert
       expect(() async => result(TestingDatas.productModelList),
