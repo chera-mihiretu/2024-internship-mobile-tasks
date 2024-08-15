@@ -4,6 +4,7 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/network/network_info.dart';
+import 'core/validator/validator.dart';
 import 'features/product/data/data_resources/local_product_data_source.dart';
 import 'features/product/data/data_resources/remote_product_data_source.dart';
 import 'features/product/data/repositories/product_repository_impl.dart';
@@ -13,6 +14,7 @@ import 'features/product/domain/usecases/get_all_products_usecase.dart';
 import 'features/product/domain/usecases/get_product_usecase.dart';
 import 'features/product/domain/usecases/insert_product_usecase.dart';
 import 'features/product/domain/usecases/update_product_usecase.dart';
+import 'features/product/presentation/bloc/cubit/input_validation_cubit.dart';
 import 'features/product/presentation/bloc/product_bloc.dart';
 
 final locator = GetIt.instance;
@@ -23,6 +25,7 @@ Future<void> init() async {
   locator.registerLazySingleton(() => http.Client());
 
   //! Core instances
+  locator.registerLazySingleton(() => InputDataValidator());
   locator.registerLazySingleton(() => InternetConnectionChecker());
   locator.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(locator()));
   //! Features of app
@@ -57,6 +60,8 @@ Future<void> init() async {
       updateProductUsecase: locator(),
     ),
   );
+
+  locator.registerFactory(() => InputValidationCubit(locator()));
   //! Shared pref
 
   final sharedPreferences = await SharedPreferences.getInstance();

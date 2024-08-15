@@ -19,6 +19,10 @@ class AppData {
   static const int successInsert = 1004;
   static const int successUpdate = 1005;
   static const int successDelete = 1006;
+  //! validation errors
+  static const int invalidPriceCharacter = 2000;
+  static const int negativePrice = 2001;
+  static const int invalidName = 2002;
 
   static const Map<int, String> message = {
     cacheError: 'Caching Failed',
@@ -27,6 +31,9 @@ class AppData {
     successDelete: 'Successfully Deleted',
     successInsert: 'Successfully inserted',
     successUpdate: 'Successfully Update',
+    invalidPriceCharacter: 'Price can not contain character',
+    negativePrice: 'Price can not be negative',
+    invalidName: 'Name can not contain character'
   };
 
   static const Map<String, int> methodInt = {
