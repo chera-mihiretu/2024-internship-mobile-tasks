@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/product_bloc.dart';
+import '../bloc/product_events.dart';
 import '../bloc/product_states.dart';
 import 'product_card.dart';
 
@@ -31,6 +32,7 @@ class ProductListDisplayer extends StatelessWidget {
           } else if (state is LoadingState) {
             return const Center(child: CircularProgressIndicator());
           } else {
+            BlocProvider.of<ProductBloc>(context).add(LoadAllProductEvents());
             return const Center(
               child: Text('No Data'),
             );

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 
 abstract class ProductEvents extends Equatable {
@@ -35,8 +37,8 @@ class DeleteProductEvent extends ProductEvents {
 class InsertProductEvent extends ProductEvents {
   final String name;
   final String description;
-  final int price;
-  final String imageUrl;
+  final String price;
+  final File imageUrl;
 
   InsertProductEvent({
     required this.name,

@@ -1,7 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+// ignore: depend_on_referenced_packages
+import 'package:http_parser/http_parser.dart';
+
 import '../../../../core/constants/constants.dart';
 import '../../../../core/errors/exceptions/product_exceptions.dart';
 import '../models/product_model.dart';
@@ -49,19 +53,41 @@ class RemoteProductDataSourceImp implements RemoteProductDataSource {
 
   /// Sends request to server to insert a given [productModel]
   ///
+  /// Send image through
   ///
   /// Throws [ServerException] if the request failed
   @override
-  Future<int> insertProduct(ProductModel productModel) => executeQuery(
-        AppData.post,
-        AppData.allProductUrl,
-        {
-          'image': productModel.imageUrl,
-          'name': productModel.name,
-          'description': productModel.description,
-          'price': '${productModel.price}',
-        },
+  Future<int> insertProduct(ProductModel productModel) async {
+    try {
+      final uri = Uri.parse(AppData.allProductUrl);
+      final request = http.MultipartRequest('POST', uri);
+      if (!File(productModel.imageUrl).existsSync()) {
+        throw ServerException();
+      }
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          'image',
+          productModel.imageUrl,
+          contentType: MediaType('image', 'png'),
+        ),
       );
+      request.fields['name'] = productModel.name;
+      request.fields['description'] = productModel.description;
+      request.fields['price'] = productModel.price.toString();
+
+      final result = await client.send(request);
+
+      if (result.statusCode == 201) {
+        return AppData.successInsert;
+      } else {
+        debugPrint(result.statusCode.toString());
+
+        throw ServerException();
+      }
+    } on Exception {
+      throw ServerException();
+    }
+  }
 
   /// Sends request to the server to be updated [id] in the url and [productModel] as json
   ///
@@ -99,7 +125,7 @@ class RemoteProductDataSourceImp implements RemoteProductDataSource {
         result = await typeMap[requestType](Uri.parse(url),
             headers: AppData.jsonHeader);
       }
-      if (result.statusCode == 200) {
+      if (result.statusCode == 201) {
         return AppData.getCorrespondingSuccess(requestType);
       } else {
         throw ServerException();

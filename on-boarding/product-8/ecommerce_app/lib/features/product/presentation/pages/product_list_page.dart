@@ -6,6 +6,7 @@ import '../bloc/product_events.dart';
 import '../widgets/product_list_displayer.dart';
 import '../widgets/search_available.dart';
 import '../widgets/user_info.dart';
+import 'add_product_page.dart';
 
 class ProductListPage extends StatelessWidget {
   static String routes = '/product_list_page';
@@ -19,7 +20,9 @@ class ProductListPage extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(100),
         ),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, AddProductPage.routes);
+        },
         child: const Icon(
           Icons.add,
           color: Colors.white,

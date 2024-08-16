@@ -1,3 +1,6 @@
+import 'dart:io';
+
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -26,6 +29,7 @@ class InputValidationCubit extends Cubit<InputValidationState> {
     List<dynamic> nameData = [state.name, state.nameMessage];
     List<dynamic> catagoryData = [state.catagory, state.catagoryMessage];
     List<dynamic> priceData = [state.price, state.priceMessage];
+    File? imageUrl = state.imageUrl;
     Map<String, List<dynamic>> correspondList = {
       'Name': nameData,
       'Catagory': catagoryData,
@@ -39,6 +43,29 @@ class InputValidationCubit extends Cubit<InputValidationState> {
     });
 
     emit(InputValidatedState(
-        name: nameData[0], catagory: catagoryData[0], price: priceData[0]));
+      name: nameData[0],
+      catagory: catagoryData[0],
+      price: priceData[0],
+      imageUrl: imageUrl,
+      nameMessage: nameData[1],
+      catagoryMessage: catagoryData[1],
+      priceMessage: priceData[1],
+    ));
+  }
+
+  void setImage(File urls) {
+    List<dynamic> nameData = [state.name, state.nameMessage];
+    List<dynamic> catagoryData = [state.catagory, state.catagoryMessage];
+    List<dynamic> priceData = [state.price, state.priceMessage];
+
+    emit(InputValidatedState(
+      name: nameData[0],
+      catagory: catagoryData[0],
+      price: priceData[0],
+      imageUrl: urls,
+      nameMessage: nameData[1],
+      catagoryMessage: catagoryData[1],
+      priceMessage: priceData[1],
+    ));
   }
 }

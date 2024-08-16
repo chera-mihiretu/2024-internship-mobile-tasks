@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:ecommerce_app/core/constants/constants.dart';
@@ -140,8 +142,8 @@ void main() {
       },
       act: (bloc) => bloc.add(InsertProductEvent(
           name: TestingDatas.testDataEntity.name,
-          imageUrl: TestingDatas.testDataEntity.imageUrl,
-          price: TestingDatas.testDataEntity.price,
+          imageUrl: File(TestingDatas.testDataEntity.imageUrl),
+          price: '${TestingDatas.testDataEntity.price}',
           description: TestingDatas.testDataEntity.description)),
       expect: () => [
         LoadingState(),
@@ -157,8 +159,8 @@ void main() {
       },
       act: (bloc) => bloc.add(InsertProductEvent(
           name: TestingDatas.testDataEntity.name,
-          imageUrl: TestingDatas.testDataEntity.imageUrl,
-          price: TestingDatas.testDataEntity.price,
+          imageUrl: File(TestingDatas.testDataEntity.imageUrl),
+          price: '${TestingDatas.testDataEntity.price}',
           description: TestingDatas.testDataEntity.description)),
       expect: () => [
         LoadingState(),
@@ -177,8 +179,8 @@ void main() {
       },
       act: (bloc) => bloc.add(InsertProductEvent(
           name: TestingDatas.testDataEntity.name,
-          imageUrl: TestingDatas.testDataEntity.imageUrl,
-          price: TestingDatas.testDataEntity.price,
+          imageUrl: File(TestingDatas.testDataEntity.imageUrl),
+          price: '${TestingDatas.testDataEntity.price}',
           description: TestingDatas.testDataEntity.description)),
       expect: () => [
         LoadingState(),

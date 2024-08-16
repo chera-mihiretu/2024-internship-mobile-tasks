@@ -51,8 +51,8 @@ class ProductBloc extends Bloc<ProductEvents, ProductStates> {
         id: '',
         name: event.name,
         description: event.description,
-        price: event.price,
-        imageUrl: event.imageUrl,
+        price: int.parse(event.price),
+        imageUrl: event.imageUrl.path,
       );
       final result = await insertProductUseCase.execute(entity);
 

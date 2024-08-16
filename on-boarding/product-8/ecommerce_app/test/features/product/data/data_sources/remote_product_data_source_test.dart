@@ -7,7 +7,10 @@ import 'package:ecommerce_app/features/product/data/data_resources/remote_produc
 import 'package:ecommerce_app/features/product/data/models/product_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
+// ignore: depend_on_referenced_packages
+import 'package:http_parser/http_parser.dart';
 import 'package:mockito/mockito.dart';
+
 import '../../../../test_helper/test_helper_generation.mocks.dart';
 import '../../../../test_helper/testing_datas/product_testing_data.dart';
 
@@ -127,89 +130,78 @@ void main() {
   });
 
   group('insertList', () {
-    test('Should add user into the data', () async {
+    test('Should success', () async {
+      const fakePath = '/home/chera/Downloads/certificate.jpg';
+
+      final uri = Uri.parse(AppData.baseUrl);
+      final request = http.MultipartRequest('POST', uri);
+      final myTest = ProductModel(
+        id: TestingDatas.id,
+        name: TestingDatas.testDataModel.name,
+        description: TestingDatas.testDataModel.description,
+        price: TestingDatas.testDataModel.price,
+        imageUrl: fakePath,
+      );
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          'image',
+          fakePath,
+          contentType: MediaType('image', 'png'),
+        ),
+      );
+      request.fields['name'] = TestingDatas.testDataModel.name;
+      request.fields['description'] = TestingDatas.testDataModel.description;
+      request.fields['price'] = TestingDatas.testDataModel.price.toString();
+
+      const fileContent = 'file content';
+
+      final expecterStream =
+          Stream<List<int>>.fromIterable([utf8.encode(fileContent)]);
+      final streamedResponse = http.StreamedResponse(expecterStream, 200);
+
       /// arrange
-      when(mockHttpClient.post(Uri.parse(AppData.allProductUrl),
-              body: {
-                'image': TestingDatas.testDataModel.imageUrl,
-                'name': TestingDatas.testDataModel.name,
-                'description': TestingDatas.testDataModel.description,
-                'price': '${TestingDatas.testDataModel.price}',
-              },
-              headers: anyNamed('headers')))
-          .thenAnswer((_) async => http.Response('', 200));
+      when(mockHttpClient.send(any)).thenAnswer((_) async => streamedResponse);
 
       /// action
-      final result = await remoteProductDataSourceImp
-          .insertProduct(TestingDatas.testDataModel);
+      final result = await remoteProductDataSourceImp.insertProduct(myTest);
 
       /// assert
       expect(result, AppData.successInsert);
-      verify(mockHttpClient.post(any,
-          body: {
-            'image': TestingDatas.testDataModel.imageUrl,
-            'name': TestingDatas.testDataModel.name,
-            'description': TestingDatas.testDataModel.description,
-            'price': '${TestingDatas.testDataModel.price}',
-          },
-          headers: anyNamed('headers')));
+      verify(mockHttpClient.send(any));
     });
 
-    test('Should throw server exception when request fails, socket exception',
-        () async {
+    test('Should success', () async {
+      const fakePath = '/home/chera/Downloads/certificate.jpg';
+
+      final uri = Uri.parse(AppData.baseUrl);
+      final request = http.MultipartRequest('POST', uri);
+      final myTest = ProductModel(
+        id: TestingDatas.id,
+        name: TestingDatas.testDataModel.name,
+        description: TestingDatas.testDataModel.description,
+        price: TestingDatas.testDataModel.price,
+        imageUrl: fakePath,
+      );
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          'image',
+          fakePath,
+          contentType: MediaType('image', 'png'),
+        ),
+      );
+      request.fields['name'] = TestingDatas.testDataModel.name;
+      request.fields['description'] = TestingDatas.testDataModel.description;
+      request.fields['price'] = TestingDatas.testDataModel.price.toString();
+
       /// arrange
-      when(mockHttpClient.post(Uri.parse(AppData.allProductUrl),
-              body: {
-                'image': TestingDatas.testDataModel.imageUrl,
-                'name': TestingDatas.testDataModel.name,
-                'description': TestingDatas.testDataModel.description,
-                'price': '${TestingDatas.testDataModel.price}',
-              },
-              headers: anyNamed('headers')))
-          .thenThrow(const SocketException('Failed'));
+      when(mockHttpClient.send(any)).thenThrow(ServerException());
 
       /// action
-      final result = remoteProductDataSourceImp.insertProduct;
+      final result = await remoteProductDataSourceImp.insertProduct(myTest);
 
       /// assert
-      expect(() async => result(TestingDatas.testDataModel),
-          throwsA(isA<ServerException>()));
-      verify(mockHttpClient.post(any,
-          body: {
-            'image': TestingDatas.testDataModel.imageUrl,
-            'name': TestingDatas.testDataModel.name,
-            'description': TestingDatas.testDataModel.description,
-            'price': '${TestingDatas.testDataModel.price}',
-          },
-          headers: anyNamed('headers')));
-    });
-
-    test('Should throw server exception when status code is not 200', () async {
-      /// arrange
-      when(mockHttpClient.post(Uri.parse(AppData.allProductUrl),
-              body: {
-                'image': TestingDatas.testDataModel.imageUrl,
-                'name': TestingDatas.testDataModel.name,
-                'description': TestingDatas.testDataModel.description,
-                'price': '${TestingDatas.testDataModel.price}',
-              },
-              headers: anyNamed('headers')))
-          .thenAnswer((_) async => http.Response('Not found', 404));
-
-      /// action
-      final result = remoteProductDataSourceImp.insertProduct;
-
-      /// assert
-      expect(() async => result(TestingDatas.testDataModel),
-          throwsA(isA<ServerException>()));
-      verify(mockHttpClient.post(any,
-          body: {
-            'image': TestingDatas.testDataModel.imageUrl,
-            'name': TestingDatas.testDataModel.name,
-            'description': TestingDatas.testDataModel.description,
-            'price': '${TestingDatas.testDataModel.price}',
-          },
-          headers: anyNamed('headers')));
+      expect(result, throwsA(isA<ServerException>()));
+      verify(mockHttpClient.send(any));
     });
   });
 
