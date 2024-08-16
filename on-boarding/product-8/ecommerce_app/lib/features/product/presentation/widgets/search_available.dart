@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/themes/themes.dart';
+import '../pages/search_product_page.dart';
 
 class SearchNavigator extends StatelessWidget {
   const SearchNavigator({super.key});
@@ -24,7 +25,9 @@ class SearchNavigator extends StatelessWidget {
                 border: Border.all(color: MyTheme.ecGrey, width: 2),
                 borderRadius: BorderRadius.circular(16)),
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, SearchProduct.routes);
+              },
               icon: const Icon(
                 Icons.search,
                 color: MyTheme.ecGrey,

@@ -91,4 +91,8 @@ class ProductBloc extends Bloc<ProductEvents, ProductStates> {
       });
     });
   }
+
+  void refresh() {
+    emit(state);
+  }
 }

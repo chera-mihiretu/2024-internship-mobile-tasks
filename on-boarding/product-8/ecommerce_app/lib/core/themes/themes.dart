@@ -17,5 +17,6 @@ class MyTheme {
   static const double largeFont = 30;
   static ThemeData lightTheme = ThemeData(
       floatingActionButtonTheme:
-          const FloatingActionButtonThemeData(backgroundColor: ecBlue));
+          const FloatingActionButtonThemeData(backgroundColor: ecBlue),
+      scaffoldBackgroundColor: ecWhite);
 }
