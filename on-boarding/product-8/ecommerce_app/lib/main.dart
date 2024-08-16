@@ -6,6 +6,7 @@ import 'features/product/presentation/bloc/cubit/input_validation_cubit.dart';
 import 'features/product/presentation/bloc/product_bloc.dart';
 import 'features/product/presentation/pages/add_product_page.dart';
 import 'features/product/presentation/pages/product_list_page.dart';
+import 'features/product/presentation/pages/single_product_page.dart';
 
 void main() async {
   WidgetsFlutterBinding().ensureSemantics();
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         routes: {
           AddProductPage.routes: (context) => AddProductPage(),
           ProductListPage.routes: (context) => const ProductListPage(),
+          SingleProduct.routes: (context) => SingleProduct()
         },
         initialRoute: ProductListPage.routes,
       ),

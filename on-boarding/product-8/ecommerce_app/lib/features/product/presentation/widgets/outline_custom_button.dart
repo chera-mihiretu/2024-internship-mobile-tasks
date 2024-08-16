@@ -12,7 +12,7 @@ class OutlineCustomButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: OutlinedButton(
-        onPressed: () {},
+        onPressed: press,
         style: FilledButton.styleFrom(
           foregroundColor: MyTheme.ecRed,
           side: const BorderSide(color: MyTheme.ecRed),

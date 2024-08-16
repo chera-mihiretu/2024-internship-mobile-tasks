@@ -125,7 +125,7 @@ class RemoteProductDataSourceImp implements RemoteProductDataSource {
         result = await typeMap[requestType](Uri.parse(url),
             headers: AppData.jsonHeader);
       }
-      if (result.statusCode == 201) {
+      if (result.statusCode == 200) {
         return AppData.getCorrespondingSuccess(requestType);
       } else {
         throw ServerException();
@@ -144,7 +144,7 @@ class RemoteProductDataSourceImp implements RemoteProductDataSource {
       late http.Response result;
 
       if (id != null) {
-        result = await client.get(Uri.parse('${AppData.baseUrl}/$id'),
+        result = await client.get(Uri.parse('${AppData.allProductUrl}/$id'),
             headers: AppData.jsonHeader);
       } else {
         result = await client.get(Uri.parse(url), headers: AppData.jsonHeader);

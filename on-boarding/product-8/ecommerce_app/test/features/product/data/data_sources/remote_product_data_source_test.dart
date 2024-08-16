@@ -79,7 +79,7 @@ void main() {
         () async {
       /// arrange
       when(mockHttpClient.get(
-              Uri.parse('${AppData.baseUrl}/${TestingDatas.id}'),
+              Uri.parse('${AppData.allProductUrl}/${TestingDatas.id}'),
               headers: anyNamed('headers')))
           .thenAnswer(
               (_) async => http.Response(TestingDatas.getSingleProduct(), 200));
@@ -97,7 +97,7 @@ void main() {
     test('Should throw ServerExceptoiin when query failed', () async {
       /// arrange
       when(mockHttpClient.get(
-              Uri.parse('${AppData.baseUrl}/${TestingDatas.apiId}'),
+              Uri.parse('${AppData.allProductUrl}/${TestingDatas.apiId}'),
               headers: anyNamed('headers')))
           .thenThrow(const SocketException('Failed'));
 
@@ -115,7 +115,7 @@ void main() {
         () async {
       /// arrange
       when(mockHttpClient.get(
-              Uri.parse('${AppData.baseUrl}/${TestingDatas.apiId}'),
+              Uri.parse('${AppData.allProductUrl}/${TestingDatas.apiId}'),
               headers: anyNamed('headers')))
           .thenAnswer((_) async => http.Response('Not found', 404));
 

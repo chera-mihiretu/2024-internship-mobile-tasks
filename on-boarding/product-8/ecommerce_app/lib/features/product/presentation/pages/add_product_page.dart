@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../core/errors/failures/failure.dart';
 import '../bloc/cubit/input_validation_cubit.dart';
 import '../bloc/product_bloc.dart';
 import '../bloc/product_events.dart';
@@ -11,6 +10,7 @@ import '../widgets/fill_custom_button.dart';
 import '../widgets/image_pick.dart';
 import '../widgets/outline_custom_button.dart';
 
+// ignore: must_be_immutable
 class AddProductPage extends StatelessWidget with AppBars {
   final TextEditingController nameControl = TextEditingController();
   final TextEditingController catagoryControl = TextEditingController();
@@ -26,6 +26,7 @@ class AddProductPage extends StatelessWidget with AppBars {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: normalAppBar('Add Product', () {
+        BlocProvider.of<ProductBloc>(context).add(LoadAllProductEvents());
         Navigator.pop(context);
       }),
       body: SafeArea(
@@ -33,6 +34,8 @@ class AddProductPage extends StatelessWidget with AppBars {
           child: BlocListener<ProductBloc, ProductStates>(
             listener: (context, state) {
               if (state is SuccessfullState) {
+                BlocProvider.of<ProductBloc>(context)
+                    .add(LoadAllProductEvents());
                 Navigator.pop(context);
               } else if (state is ErrorState) {
                 ScaffoldMessenger.of(context)

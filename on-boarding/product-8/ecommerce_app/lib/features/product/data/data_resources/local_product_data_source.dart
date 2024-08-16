@@ -27,30 +27,23 @@ class LocalProductDataSourceImpl implements LocalProductDataSource {
   /// Return false if there is same data failure while processing
   @override
   Future<bool> addListOfProduct(List<ProductModel> models) async {
-    final result = sharedPreferences.getString(AppData.sharedProduct);
-
-    if (result == null) {
-      Map<String, dynamic> list = <String, dynamic>{};
-      for (ProductModel model in models) {
-        if (!await sharedPreferences.setString(
-            model.id, json.encode(model.toJson()))) {
-          if (list.isNotEmpty) {
-            await sharedPreferences.setString(
-                AppData.sharedProduct, json.encode(list));
-          }
-
-          throw CacheException();
+    Map<String, dynamic> list = <String, dynamic>{};
+    for (ProductModel model in models) {
+      if (!await sharedPreferences.setString(
+          model.id, json.encode(model.toJson()))) {
+        if (list.isNotEmpty) {
+          await sharedPreferences.setString(
+              AppData.sharedProduct, json.encode(list));
         }
-        list[model.id] = 1;
+
+        throw CacheException();
       }
-
-      await sharedPreferences.setString(
-          AppData.sharedProduct, json.encode(list));
-
-      return true;
-    } else {
-      return true;
+      list[model.id] = 1;
     }
+
+    await sharedPreferences.setString(AppData.sharedProduct, json.encode(list));
+
+    return true;
   }
 
   /// Simply add the product using the id and also add it into the product list
