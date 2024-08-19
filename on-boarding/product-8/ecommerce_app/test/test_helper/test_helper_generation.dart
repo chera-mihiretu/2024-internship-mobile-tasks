@@ -1,4 +1,6 @@
 import 'package:ecommerce_app/core/network/network_info.dart';
+import 'package:ecommerce_app/features/auth/data/data_source/remote_auth_data_source.dart';
+import 'package:ecommerce_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:ecommerce_app/features/product/data/data_resources/local_product_data_source.dart';
 import 'package:ecommerce_app/features/product/data/data_resources/remote_product_data_source.dart';
 import 'package:ecommerce_app/features/product/domain/repositories/product_repository.dart';
@@ -24,7 +26,9 @@ import 'package:shared_preferences/shared_preferences.dart';
     GetProductUseCase,
     UpdateProductUsecase,
     InsertProductUseCase,
-    DeleteProductUseCase
+    DeleteProductUseCase,
+    AuthRepository,
+    RemoteAuthDataSource
   ],
   customMocks: [MockSpec<http.Client>(as: #MockHttpClient)],
 )
