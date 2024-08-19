@@ -11,7 +11,7 @@ class CostumInput extends StatelessWidget {
   final Color? fillColor;
   final Color? borderColor;
   final int maxLine;
-
+  final Color textColor;
   const CostumInput(
       {super.key,
       required this.hint,
@@ -19,7 +19,8 @@ class CostumInput extends StatelessWidget {
       required this.text,
       this.fillColor,
       this.borderColor,
-      this.maxLine = 1});
+      this.maxLine = 1,
+      this.textColor = MyTheme.ecBlack});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class CostumInput extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           child: Text(
             text,
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold, color: textColor),
           ),
         ),
         Padding(
@@ -56,7 +57,7 @@ class CostumInput extends StatelessWidget {
                       .checkChanges([text, value]);
                 },
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.zero,
+                  contentPadding: const EdgeInsets.all(10),
                   fillColor:
                       (fillColor == null) ? MyTheme.ecInputGrey : fillColor,
                   filled: true,
@@ -75,6 +76,7 @@ class CostumInput extends StatelessWidget {
                       color: color,
                     ),
                   ),
+                  hintText: hint,
                 ),
               );
             },

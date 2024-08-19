@@ -90,9 +90,11 @@ class ProductBloc extends Bloc<ProductEvents, ProductStates> {
         emit(SuccessfullState(message: AppData.getMessage(data)));
       });
     });
-  }
 
-  void refresh() {
-    emit(state);
+    on<RefreshEvent>((event, emit) {
+      if (state is LoadedAllProductState) {
+        emit(LoadedAllProductState(data: [...state.data]));
+      }
+    });
   }
 }

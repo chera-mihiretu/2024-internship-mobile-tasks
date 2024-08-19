@@ -34,6 +34,8 @@ class DeleteProductEvent extends ProductEvents {
   DeleteProductEvent({required this.id});
 }
 
+class RefreshEvent extends ProductEvents {}
+
 class InsertProductEvent extends ProductEvents {
   final String name;
   final String description;

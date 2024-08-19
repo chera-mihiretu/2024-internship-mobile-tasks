@@ -7,8 +7,9 @@ import '../pages/single_product_page.dart';
 import 'product_card.dart';
 
 class ProductListDisplayer extends StatelessWidget {
-  const ProductListDisplayer({super.key});
-
+  const ProductListDisplayer({
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -19,6 +20,7 @@ class ProductListDisplayer extends StatelessWidget {
               itemCount: state.data.length,
               itemBuilder: (context, index) {
                 return GestureDetector(
+                  key: Key(state.data[index].id),
                   onTap: () {
                     BlocProvider.of<ProductBloc>(context).add(
                       GetSingleProductEvents(

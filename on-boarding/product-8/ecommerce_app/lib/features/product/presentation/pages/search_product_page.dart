@@ -45,6 +45,7 @@ class _SearchProduct extends State<SearchProduct> with AppBars {
                   control: searchControl,
                   search: () {},
                   onChange: (text) {
+                    ///BlocProvider.of<ProductBloc>(context).add(RefreshEvent());
                     setState(() {});
                   },
                 ),
