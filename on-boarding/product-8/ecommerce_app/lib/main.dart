@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'core/themes/themes.dart';
 import 'dependency_injection.dart';
+import 'features/auth/presentation/page/login_page.dart';
+import 'features/auth/presentation/page/signup_page.dart';
 import 'features/product/presentation/bloc/cubit/input_validation_cubit.dart';
 import 'features/product/presentation/bloc/product_bloc.dart';
 import 'features/product/presentation/pages/add_product_page.dart';
 import 'features/product/presentation/pages/product_list_page.dart';
 import 'features/product/presentation/pages/search_product_page.dart';
 import 'features/product/presentation/pages/single_product_page.dart';
+import 'features/product/presentation/pages/splash_page.dart';
 
 void main() async {
   WidgetsFlutterBinding().ensureSemantics();
@@ -35,9 +39,12 @@ class MyApp extends StatelessWidget {
           AddProductPage.routes: (context) => AddProductPage(),
           ProductListPage.routes: (context) => const ProductListPage(),
           SingleProduct.routes: (context) => SingleProduct(),
-          SearchProduct.routes: (context) => SearchProduct(),
+          SearchProduct.routes: (context) => const SearchProduct(),
+          SplashPage.routes: (context) => const SplashPage(),
+          LoginPage.routes: (context) => LoginPage(),
+          SignUpPage.routes: (context) => SignUpPage(),
         },
-        initialRoute: ProductListPage.routes,
+        initialRoute: SplashPage.routes,
       ),
     );
   }
