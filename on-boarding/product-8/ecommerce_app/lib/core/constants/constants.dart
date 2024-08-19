@@ -1,11 +1,20 @@
 class AppData {
+  //! Shared Preference list name
   static const String sharedProduct = 'my_shared_products';
+  //! Url data's
   static const String baseUrl =
       'https://g5-flutter-learning-path-be.onrender.com/api/v1';
+  static const String baseUrlV2 =
+      'https://g5-flutter-learning-path-be.onrender.com/api/v2';
+  static const String registerUser = '$baseUrlV2/auth/register';
+  static const String logInUser = '$baseUrlV2/auth/login';
   static const String allProductUrl = '$baseUrl/products';
+  //! json information
   static const Map<String, String> jsonHeader = {
     'Content-Type': 'application/json'
   };
+
+  //! request methids
   static const String post = 'POST';
   static const String get = 'GET';
   static const String put = 'PUT';
