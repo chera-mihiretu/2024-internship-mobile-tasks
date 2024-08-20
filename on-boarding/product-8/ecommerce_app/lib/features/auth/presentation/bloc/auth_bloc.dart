@@ -1,9 +1,9 @@
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../../../core/errors/failures/failure.dart';
-import '../../../domain/entities/user_entity.dart';
-import '../../../domain/repositories/auth_repository.dart';
+import '../../domain/entities/user_entity.dart';
+import '../../domain/repositories/auth_repository.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -17,17 +17,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           UserEntity(name: '', email: event.email, password: event.password);
       final result = await repository.logIn(myEnity);
       result.fold((failure) {
-        emit(AuthErrosState(message: failure.message));
+        emit(LoginErrorState(message: failure.message));
       }, (data) {
         emit(LogInSuccessState());
       });
     });
     on<SignUpEvent>((event, emit) async {
+      emit(AuthLoadingstate());
       UserEntity myEnity = UserEntity(
           name: event.name, email: event.email, password: event.password);
       final result = await repository.signUp(myEnity);
+
       result.fold((failure) {
-        emit(AuthErrosState(message: failure.message));
+        emit(SignupErrorState(message: failure.message));
       }, (data) {
         emit(RegisterSuccessState());
       });

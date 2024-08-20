@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:ecommerce_app/features/product/presentation/bloc/product_bloc.dart';
 import 'package:ecommerce_app/features/product/presentation/bloc/product_events.dart';
-import 'package:ecommerce_app/features/product/presentation/bloc/product_states.dart';
 import 'package:ecommerce_app/features/product/presentation/widgets/product_list_displayer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

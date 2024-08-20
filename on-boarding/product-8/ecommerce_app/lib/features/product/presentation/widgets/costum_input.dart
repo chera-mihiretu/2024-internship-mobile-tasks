@@ -57,27 +57,27 @@ class CostumInput extends StatelessWidget {
                       .checkChanges([text, value]);
                 },
                 decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(10),
-                  fillColor:
-                      (fillColor == null) ? MyTheme.ecInputGrey : fillColor,
-                  filled: true,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: (borderColor == null)
-                          ? Colors.transparent
-                          : borderColor!,
+                    contentPadding: const EdgeInsets.all(10),
+                    fillColor:
+                        (fillColor == null) ? MyTheme.ecInputGrey : fillColor,
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: color,
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: (borderColor == null)
+                            ? Colors.transparent
+                            : borderColor!,
+                      ),
                     ),
-                  ),
-                  hintText: hint,
-                ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: color,
+                      ),
+                    ),
+                    hintText: hint,
+                    hintStyle: const TextStyle(color: MyTheme.ecGrey)),
               );
             },
           ),

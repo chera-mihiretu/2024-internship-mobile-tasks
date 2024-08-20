@@ -5,6 +5,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/network/network_info.dart';
 import 'core/validator/validator.dart';
+import 'features/auth/data/data_source/remote_auth_data_source.dart';
+import 'features/auth/data/repositories/auth_repository_impl.dart';
+import 'features/auth/domain/repositories/auth_repository.dart';
+import 'features/auth/presentation/bloc/auth_bloc.dart';
 import 'features/product/data/data_resources/local_product_data_source.dart';
 import 'features/product/data/data_resources/remote_product_data_source.dart';
 import 'features/product/data/repositories/product_repository_impl.dart';
@@ -36,6 +40,8 @@ Future<void> init() async {
       () => RemoteProductDataSourceImp(locator()));
   locator.registerLazySingleton<LocalProductDataSource>(
       () => LocalProductDataSourceImpl(locator()));
+  locator.registerLazySingleton<RemoteAuthDataSource>(
+      () => RemoteAuthDataSourceImpl(client: locator()));
   // Repositories
   locator.registerLazySingleton<ProductRepository>(
     () => ProductRepositoryImpl(
@@ -44,6 +50,8 @@ Future<void> init() async {
       networkInfo: locator(),
     ),
   );
+  locator.registerLazySingleton<AuthRepository>(
+      () => AuthRepositoryImpl(remoteAuthDataSource: locator()));
   // usecases
   locator.registerLazySingleton(() => UpdateProductUsecase(locator()));
   locator.registerLazySingleton(() => InsertProductUseCase(locator()));
@@ -61,6 +69,7 @@ Future<void> init() async {
     ),
   );
 
+  locator.registerFactory(() => AuthBloc(repository: locator()));
   locator.registerFactory(() => InputValidationCubit(locator()));
   //! Shared pref
 

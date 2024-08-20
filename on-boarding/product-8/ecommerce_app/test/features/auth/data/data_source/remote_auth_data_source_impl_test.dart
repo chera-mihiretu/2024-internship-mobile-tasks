@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:ecommerce_app/core/constants/constants.dart';
 import 'package:ecommerce_app/core/errors/exceptions/product_exceptions.dart';
 import 'package:ecommerce_app/features/auth/data/data_source/remote_auth_data_source.dart';
@@ -21,39 +19,53 @@ void main() {
   group('Log in test', () {
     test('Should return true when data is valid', () async {
       /// arrange
-      when(mockHttpClient.post(Uri.parse(AppData.logInUser),
-              headers: AppData.jsonHeader,
-              body: {'email': AuthData.email, 'password': AuthData.password}))
-          .thenAnswer((_) async => http.Response('Done', 200));
+      when(
+        mockHttpClient.post(
+          Uri.parse(AppData.logInUser),
+          body: {
+            'email': AuthData.email,
+            'password': AuthData.password,
+          },
+        ),
+      ).thenAnswer((_) async => http.Response(AuthData.readJson(), 201));
 
       /// action
       final result = await remoteAuthDataSourceImpl.logIn(AuthData.userEntity);
 
       /// assert
-      expect(result, true);
+      expect(result, AuthData.userModel);
     });
 
     test('Should return throw server exception when data is valid', () async {
       /// arrange
-      when(mockHttpClient.post(Uri.parse(AppData.logInUser),
-              headers: AppData.jsonHeader,
-              body: {'email': AuthData.email, 'password': AuthData.password}))
-          .thenAnswer((_) async => http.Response('Done', 404));
+      when(
+        mockHttpClient.post(
+          Uri.parse(AppData.logInUser),
+          body: {
+            'email': AuthData.email,
+            'password': AuthData.password,
+          },
+        ),
+      ).thenAnswer((_) async => http.Response('Done', 401));
 
       /// action
-      final result = remoteAuthDataSourceImpl.logIn;
+      final result = remoteAuthDataSourceImpl.logIn(AuthData.userEntity);
 
       /// assert
-      expect(() async => result(AuthData.userEntity),
-          throwsA(isA<ServerException>()));
+      expect(result, throwsA(isA<LoginException>()));
     });
 
     test('Should throw server exception when data is valid', () async {
       /// arrange
-      when(mockHttpClient.post(Uri.parse(AppData.logInUser),
-              headers: AppData.jsonHeader,
-              body: {'email': AuthData.email, 'password': AuthData.password}))
-          .thenThrow(ServerException());
+      when(
+        mockHttpClient.post(
+          Uri.parse(AppData.logInUser),
+          body: {
+            'email': AuthData.email,
+            'password': AuthData.password,
+          },
+        ),
+      ).thenThrow(ServerException());
 
       /// action
       final result = remoteAuthDataSourceImpl.logIn;
@@ -67,13 +79,16 @@ void main() {
   group('Sign up test', () {
     test('Should return true when data is valid', () async {
       /// arrange
-      when(mockHttpClient.post(Uri.parse(AppData.registerUser),
-          headers: AppData.jsonHeader,
+      when(
+        mockHttpClient.post(
+          Uri.parse(AppData.registerUser),
           body: {
             'name': AuthData.name,
             'email': AuthData.email,
             'password': AuthData.password
-          })).thenAnswer((_) async => http.Response('Done', 200));
+          },
+        ),
+      ).thenAnswer((_) async => http.Response('Done', 201));
 
       /// action
       final result = await remoteAuthDataSourceImpl.signUp(AuthData.userEntity);
@@ -84,13 +99,16 @@ void main() {
 
     test('Should return throw server exception when data is valid', () async {
       /// arrange
-      when(mockHttpClient.post(Uri.parse(AppData.registerUser),
-          headers: AppData.jsonHeader,
+      when(
+        mockHttpClient.post(
+          Uri.parse(AppData.registerUser),
           body: {
             'name': AuthData.name,
             'email': AuthData.email,
             'password': AuthData.password
-          })).thenAnswer((_) async => http.Response('Done', 404));
+          },
+        ),
+      ).thenAnswer((_) async => http.Response('Done', 404));
 
       /// action
       final result = remoteAuthDataSourceImpl.signUp;
@@ -100,15 +118,37 @@ void main() {
           throwsA(isA<ServerException>()));
     });
 
-    test('Should throw server exception when data is valid', () async {
+    test('Should return throw server exception when data is valid', () async {
       /// arrange
-      when(mockHttpClient.post(Uri.parse(AppData.registerUser),
-          headers: AppData.jsonHeader,
+      when(
+        mockHttpClient.post(
+          Uri.parse(AppData.registerUser),
           body: {
             'name': AuthData.name,
             'email': AuthData.email,
             'password': AuthData.password
-          })).thenThrow(ServerException());
+          },
+        ),
+      ).thenAnswer((_) async => http.Response('Done', 409));
+
+      /// action
+      final result = remoteAuthDataSourceImpl.signUp(AuthData.userEntity);
+
+      expect(result, throwsA(isA<UserConflictException>()));
+    });
+
+    test('Should throw server exception when data is valid', () async {
+      /// arrange
+      when(
+        mockHttpClient.post(
+          Uri.parse(AppData.registerUser),
+          body: {
+            'name': AuthData.name,
+            'email': AuthData.email,
+            'password': AuthData.password
+          },
+        ),
+      ).thenThrow(ServerException());
 
       /// action
       final result = remoteAuthDataSourceImpl.signUp;

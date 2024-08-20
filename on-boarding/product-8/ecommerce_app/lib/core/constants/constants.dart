@@ -1,6 +1,7 @@
 class AppData {
   //! Shared Preference list name
   static const String sharedProduct = 'my_shared_products';
+  static const String tokenPlacement = 'token_placement';
   //! Url data's
   static const String baseUrl =
       'https://g5-flutter-learning-path-be.onrender.com/api/v1';
@@ -28,6 +29,8 @@ class AppData {
   static const int successInsert = 1004;
   static const int successUpdate = 1005;
   static const int successDelete = 1006;
+  static const int userExists = 1007;
+  static const int loginFailed = 1008;
   //! validation errors
   static const int invalidPriceCharacter = 2000;
   static const int negativePrice = 2001;
@@ -37,6 +40,8 @@ class AppData {
     cacheError: 'Caching Failed',
     connectionError: 'No Internet Connection',
     serverError: 'Server request failed',
+    userExists: 'User Already Exists',
+    loginFailed: 'Login failed, check your email and password!',
     successDelete: 'Successfully Deleted',
     successInsert: 'Successfully inserted',
     successUpdate: 'Successfully Update',

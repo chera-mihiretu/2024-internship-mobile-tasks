@@ -22,7 +22,13 @@ final class LogInSuccessState extends AuthState {}
 final class RegisterSuccessState extends AuthState {}
 
 // ignore: must_be_immutable
-final class AuthErrosState extends AuthState {
+final class LoginErrorState extends AuthState {
   final String message;
-  AuthErrosState({required this.message}) : super([message]);
+  LoginErrorState({required this.message}) : super([message]);
+}
+
+// ignore: must_be_immutable
+final class SignupErrorState extends AuthState {
+  final String message;
+  SignupErrorState({required this.message}) : super([message]);
 }

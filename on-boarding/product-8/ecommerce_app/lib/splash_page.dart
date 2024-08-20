@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../../core/themes/themes.dart';
-import '../../../auth/presentation/page/login_page.dart';
+import 'core/themes/themes.dart';
+import 'features/auth/presentation/page/login_page.dart';
 
 class SplashPage extends StatefulWidget {
   static const String routes = '/splash_page';

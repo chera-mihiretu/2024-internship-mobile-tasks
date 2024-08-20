@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'core/themes/themes.dart';
 import 'dependency_injection.dart';
+import 'features/auth/presentation/bloc/auth_bloc.dart';
 import 'features/auth/presentation/page/login_page.dart';
 import 'features/auth/presentation/page/signup_page.dart';
 import 'features/product/presentation/bloc/cubit/input_validation_cubit.dart';
@@ -11,7 +12,7 @@ import 'features/product/presentation/pages/add_product_page.dart';
 import 'features/product/presentation/pages/product_list_page.dart';
 import 'features/product/presentation/pages/search_product_page.dart';
 import 'features/product/presentation/pages/single_product_page.dart';
-import 'features/product/presentation/pages/splash_page.dart';
+import 'splash_page.dart';
 
 void main() async {
   WidgetsFlutterBinding().ensureSemantics();
@@ -31,7 +32,10 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => locator<InputValidationCubit>(),
-        )
+        ),
+        BlocProvider(
+          create: (_) => locator<AuthBloc>(),
+        ),
       ],
       child: MaterialApp(
         theme: MyTheme.lightTheme,

@@ -36,7 +36,7 @@ class ProductListPage extends StatelessWidget {
               day: 'July 14, 2023',
             ),
             SearchNavigator(),
-            //ProductListDisplayer(),
+            ProductListDisplayer(),
           ],
         ),
       ),

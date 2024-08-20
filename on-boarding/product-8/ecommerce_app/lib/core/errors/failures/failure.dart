@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class Failure extends Equatable {
@@ -25,4 +26,12 @@ class CacheFailure extends Failure {
 
 class InvalidInputFailure extends Failure {
   const InvalidInputFailure(super.message);
+}
+
+class UserExistsFailure extends Failure {
+  const UserExistsFailure(super.message);
+}
+
+class LoginFailure extends Failure {
+  const LoginFailure(super.message);
 }
