@@ -26,7 +26,6 @@ class RemoteAuthDataSourceImpl implements RemoteAuthDataSource {
         Uri.parse(AppData.logInUser),
         body: {'email': user.email, 'password': user.password},
       );
-      debugPrint(result.statusCode.toString());
       if (result.statusCode == 201) {
         final Map<String, dynamic> jsonFormat = json.decode(result.body);
         return TokenModel.fromJson(jsonFormat['data']);

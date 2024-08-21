@@ -2,10 +2,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/constants/constants.dart';
 import '../../../../core/themes/themes.dart';
-import '../../../product/presentation/widgets/costum_input.dart';
 import '../../../product/presentation/widgets/fill_custom_button.dart';
 import '../bloc/auth_bloc.dart';
+import '../bloc/cubit/user_input_validation_cubit.dart';
+import '../widgets/auth_widgets.dart';
 
 // ignore: must_be_immutable
 class SignUpPage extends StatelessWidget {
@@ -67,31 +69,46 @@ class SignUpPage extends StatelessWidget {
                   control: nameController,
                   text: 'Name',
                   textColor: MyTheme.ecGrey,
+                  fromWhere: AppData.signup,
                 ),
                 CostumInput(
                   hint: 'ex: json.smith@email.com',
                   control: emailController,
                   text: 'Email',
                   textColor: MyTheme.ecGrey,
+                  fromWhere: AppData.signup,
                 ),
                 CostumInput(
                   hint: '***********',
                   control: passwordController,
                   text: 'Password',
                   textColor: MyTheme.ecGrey,
+                  fromWhere: AppData.signup,
                 ),
                 CostumInput(
                   hint: '***********',
                   control: confirmPassController,
                   text: 'Confirm Password',
                   textColor: MyTheme.ecGrey,
+                  fromWhere: AppData.signup,
                 ),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                   child: Row(
                     children: [
-                      Checkbox(value: false, onChanged: (val) {}),
+                      BlocBuilder<UserInputValidationCubit,
+                          UserInputValidationState>(
+                        builder: (context, state) {
+                          return Checkbox(
+                            value: state.checkbox == AppData.strValidated,
+                            onChanged: (val) {
+                              BlocProvider.of<UserInputValidationCubit>(context)
+                                  .changeCheckbox(AppData.signup, val!);
+                            },
+                          );
+                        },
+                      ),
                       RichText(
                         text: const TextSpan(
                             text: 'I undrestood the ',
@@ -111,13 +128,22 @@ class SignUpPage extends StatelessWidget {
                     Expanded(
                       child: FillCustomButton(
                         press: () {
-                          BlocProvider.of<AuthBloc>(context).add(
-                            SignUpEvent(
-                              name: nameController.text.trim(),
-                              email: emailController.text.trim(),
-                              password: passwordController.text.trim(),
-                            ),
-                          );
+                          String? message =
+                              BlocProvider.of<UserInputValidationCubit>(context)
+                                  .state
+                                  .validate();
+                          if (message == null) {
+                            BlocProvider.of<AuthBloc>(context).add(
+                              SignUpEvent(
+                                name: nameController.text.trim(),
+                                email: emailController.text.trim(),
+                                password: passwordController.text.trim(),
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(SnackBar(content: Text(message)));
+                          }
                         },
                         label: 'SIGN UP',
                       ),
@@ -138,6 +164,8 @@ class SignUpPage extends StatelessWidget {
                           style: const TextStyle(color: MyTheme.ecBlue),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
+                              BlocProvider.of<UserInputValidationCubit>(context)
+                                  .reset();
                               Navigator.pop(context);
                             },
                         )

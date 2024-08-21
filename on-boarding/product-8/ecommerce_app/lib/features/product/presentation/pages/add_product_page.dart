@@ -4,11 +4,7 @@ import '../bloc/cubit/input_validation_cubit.dart';
 import '../bloc/product_bloc.dart';
 import '../bloc/product_events.dart';
 import '../bloc/product_states.dart';
-import '../widgets/app_bar.dart';
-import '../widgets/costum_input.dart';
-import '../widgets/fill_custom_button.dart';
-import '../widgets/image_pick.dart';
-import '../widgets/outline_custom_button.dart';
+import '../widgets/product_widgets.dart';
 
 // ignore: must_be_immutable
 class AddProductPage extends StatelessWidget with AppBars {

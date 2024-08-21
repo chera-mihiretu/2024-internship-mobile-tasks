@@ -3,9 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/product_bloc.dart';
 import '../bloc/product_events.dart';
-import '../widgets/product_list_displayer.dart';
-import '../widgets/search_available.dart';
-import '../widgets/user_info.dart';
+import '../widgets/product_widgets.dart';
 import 'add_product_page.dart';
 
 class ProductListPage extends StatelessWidget {

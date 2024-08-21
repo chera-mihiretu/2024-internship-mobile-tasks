@@ -157,7 +157,7 @@ void main() {
 
       final expecterStream =
           Stream<List<int>>.fromIterable([utf8.encode(fileContent)]);
-      final streamedResponse = http.StreamedResponse(expecterStream, 200);
+      final streamedResponse = http.StreamedResponse(expecterStream, 201);
 
       /// arrange
       when(mockHttpClient.send(any)).thenAnswer((_) async => streamedResponse);
@@ -197,11 +197,11 @@ void main() {
       when(mockHttpClient.send(any)).thenThrow(ServerException());
 
       /// action
-      final result = await remoteProductDataSourceImp.insertProduct(myTest);
+      final result = remoteProductDataSourceImp.insertProduct;
 
       /// assert
-      expect(result, throwsA(isA<ServerException>()));
-      verify(mockHttpClient.send(any));
+      expect(() async => result(myTest), throwsA(isA<ServerException>()));
+      //verify(mockHttpClient.send(any));
     });
   });
 

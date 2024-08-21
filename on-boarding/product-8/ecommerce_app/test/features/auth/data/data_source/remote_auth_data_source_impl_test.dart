@@ -19,21 +19,14 @@ void main() {
   group('Log in test', () {
     test('Should return true when data is valid', () async {
       /// arrange
-      when(
-        mockHttpClient.post(
-          Uri.parse(AppData.logInUser),
-          body: {
-            'email': AuthData.email,
-            'password': AuthData.password,
-          },
-        ),
-      ).thenAnswer((_) async => http.Response(AuthData.readJson(), 201));
+      when(mockHttpClient.post(any, body: {
+        'email': AuthData.email,
+        'password': AuthData.password,
+      })).thenAnswer((_) async => http.Response(AuthData.readJson(), 201));
 
-      /// action
       final result = await remoteAuthDataSourceImpl.logIn(AuthData.userEntity);
 
-      /// assert
-      expect(result, AuthData.userModel);
+      expect(result, AuthData.tokenModel);
     });
 
     test('Should return throw server exception when data is valid', () async {

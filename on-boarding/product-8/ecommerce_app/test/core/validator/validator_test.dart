@@ -3,6 +3,7 @@ import 'package:ecommerce_app/core/constants/constants.dart';
 import 'package:ecommerce_app/core/errors/failures/failure.dart';
 import 'package:ecommerce_app/core/validator/validator.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 
 void main() {
   late InputDataValidator inputDataValidator;
@@ -58,6 +59,25 @@ void main() {
 
       expect(result,
           Left(InvalidInputFailure(AppData.getMessage(AppData.invalidName))));
+    });
+  });
+
+  group('checkThis test', () {
+    group('email test', () {
+      test('Should return true when email is fine', () {
+        final result = inputDataValidator.checkThis(
+            InputDataValidator.email, 'chera@gmail.com');
+        expect(result, const Right(true));
+      });
+
+      test('Should return true when email is fine', () {
+        final result = inputDataValidator.checkThis(
+            InputDataValidator.email, 'chera@gmai');
+        expect(
+            result,
+            Left(
+                InvalidInputFailure(AppData.getMessage(AppData.invalidEmail))));
+      });
     });
   });
 }

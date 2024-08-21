@@ -2,22 +2,29 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/constants/constants.dart';
 import '../../../../core/errors/exceptions/product_exceptions.dart';
-import '../../domain/entities/token_entity.dart';
 import '../model/token_model.dart';
 
-class AuthLocalDataSource {
-  final SharedPreferences sharedPreferences;
-  AuthLocalDataSource(this.sharedPreferences);
+abstract class AuthLocalDataSource {
+  Future<bool> saveToken(TokenModel token);
+  Future<TokenModel> getToken();
+}
 
+class AuthLocalDataSourceImpl implements AuthLocalDataSource {
+  final SharedPreferences sharedPreferences;
+
+  AuthLocalDataSourceImpl({required this.sharedPreferences});
+
+  @override
   Future<bool> saveToken(TokenModel token) async {
     try {
       await sharedPreferences.setString(AppData.tokenPlacement, token.token);
       return true;
     } on Exception {
-      return false;
+      throw CacheException();
     }
   }
 
+  @override
   Future<TokenModel> getToken() async {
     try {
       final result = sharedPreferences.getString(AppData.tokenPlacement);

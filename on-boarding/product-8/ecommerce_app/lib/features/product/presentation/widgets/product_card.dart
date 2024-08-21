@@ -112,12 +112,17 @@ class ProductCard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  productType,
-                  style: const TextStyle(
-                    color: MyTheme.ecTextGrey,
-                    fontSize: 14,
-                    fontFamily: 'poppins',
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width - 200),
+                  child: Text(
+                    productType,
+                    style: const TextStyle(
+                      color: MyTheme.ecTextGrey,
+                      fontSize: 14,
+                      fontFamily: 'poppins',
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
                 Wrap(

@@ -33,7 +33,7 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future<Either<Failure, bool>> signUp(UserEntity user) async {
     try {
-      final result = await remoteAuthDataSource.signUp(user);
+      await remoteAuthDataSource.signUp(user);
       return const Right(true);
     } on UserConflictException {
       return Left(UserExistsFailure(AppData.getMessage(AppData.userExists)));

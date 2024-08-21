@@ -2,11 +2,13 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/constants/constants.dart';
 import '../../../../core/themes/themes.dart';
 import '../../../product/presentation/pages/product_list_page.dart';
-import '../../../product/presentation/widgets/costum_input.dart';
 import '../../../product/presentation/widgets/fill_custom_button.dart';
 import '../bloc/auth_bloc.dart';
+import '../bloc/cubit/user_input_validation_cubit.dart';
+import '../widgets/auth_widgets.dart';
 import 'signup_page.dart';
 
 // ignore: must_be_immutable
@@ -61,19 +63,32 @@ class LoginPage extends StatelessWidget {
                   control: emailController,
                   text: 'Email',
                   textColor: MyTheme.ecGrey,
+                  fromWhere: AppData.login,
                 ),
                 CostumInput(
                   hint: '***********',
                   control: passwordController,
                   text: 'Password',
                   textColor: MyTheme.ecGrey,
+                  fromWhere: AppData.login,
                 ),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                   child: Row(
                     children: [
-                      Checkbox(value: false, onChanged: (val) {}),
+                      BlocBuilder<UserInputValidationCubit,
+                          UserInputValidationState>(
+                        builder: (context, state) {
+                          return Checkbox(
+                            value: state.checkbox == AppData.strValidated,
+                            onChanged: (val) {
+                              BlocProvider.of<UserInputValidationCubit>(context)
+                                  .changeCheckbox(AppData.login, val!);
+                            },
+                          );
+                        },
+                      ),
                       RichText(
                         text: const TextSpan(
                             text: 'I undrestood the ',
@@ -93,9 +108,18 @@ class LoginPage extends StatelessWidget {
                     Expanded(
                       child: FillCustomButton(
                         press: () {
-                          BlocProvider.of<AuthBloc>(context).add(LogInEvent(
-                              email: emailController.text.trim(),
-                              password: passwordController.text.trim()));
+                          String? message =
+                              BlocProvider.of<UserInputValidationCubit>(context)
+                                  .state
+                                  .validate();
+                          if (message == null) {
+                            BlocProvider.of<AuthBloc>(context).add(LogInEvent(
+                                email: emailController.text.trim(),
+                                password: passwordController.text.trim()));
+                          } else {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(SnackBar(content: Text(message)));
+                          }
                         },
                         label: 'SIGN IN',
                       ),
@@ -115,6 +139,8 @@ class LoginPage extends StatelessWidget {
                         style: const TextStyle(color: MyTheme.ecBlue),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
+                            BlocProvider.of<UserInputValidationCubit>(context)
+                                .reset();
                             Navigator.pushNamed(context, SignUpPage.routes);
                           },
                       )

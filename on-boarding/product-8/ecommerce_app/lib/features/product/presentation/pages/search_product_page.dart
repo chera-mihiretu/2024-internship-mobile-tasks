@@ -5,11 +5,7 @@ import '../../../../core/themes/themes.dart';
 import '../bloc/product_bloc.dart';
 import '../bloc/product_events.dart';
 import '../bloc/product_states.dart';
-import '../widgets/app_bar.dart';
-import '../widgets/costum_input.dart';
-import '../widgets/fill_custom_button.dart';
-import '../widgets/product_card.dart';
-import '../widgets/search_input.dart';
+import '../widgets/product_widgets.dart';
 
 class SearchProduct extends StatefulWidget {
   static String routes = '/search_product';

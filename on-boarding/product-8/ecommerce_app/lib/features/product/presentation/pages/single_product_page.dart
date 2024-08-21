@@ -5,8 +5,7 @@ import '../../../../core/themes/themes.dart';
 import '../bloc/product_bloc.dart';
 import '../bloc/product_events.dart';
 import '../bloc/product_states.dart';
-import '../widgets/fill_custom_button.dart';
-import '../widgets/outline_custom_button.dart';
+import '../widgets/product_widgets.dart';
 
 // ignore: must_be_immutable
 class SingleProduct extends StatelessWidget {

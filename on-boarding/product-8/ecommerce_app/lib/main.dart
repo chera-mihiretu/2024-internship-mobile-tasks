@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'core/themes/themes.dart';
 import 'dependency_injection.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
+import 'features/auth/presentation/bloc/cubit/user_input_validation_cubit.dart';
 import 'features/auth/presentation/page/login_page.dart';
 import 'features/auth/presentation/page/signup_page.dart';
 import 'features/product/presentation/bloc/cubit/input_validation_cubit.dart';
@@ -36,6 +37,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (_) => locator<AuthBloc>(),
         ),
+        BlocProvider(
+          create: (_) => locator<UserInputValidationCubit>(),
+        )
       ],
       child: MaterialApp(
         theme: MyTheme.lightTheme,

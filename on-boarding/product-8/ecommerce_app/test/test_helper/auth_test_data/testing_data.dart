@@ -6,6 +6,7 @@ import 'package:ecommerce_app/features/auth/data/model/user_model.dart';
 import 'package:ecommerce_app/features/auth/domain/entities/signed_up_user_entity.dart';
 import 'package:ecommerce_app/features/auth/domain/entities/token_entity.dart';
 import 'package:ecommerce_app/features/auth/domain/entities/user_entity.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 class AuthData {
   static const String token =
@@ -36,4 +37,10 @@ class AuthData {
 
     return File(dir).readAsStringSync();
   }
+}
+
+void main() {
+  test('description', () {
+    print(AuthData.readJson());
+  });
 }

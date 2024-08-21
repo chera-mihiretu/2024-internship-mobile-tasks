@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'core/constants/constants.dart';
 import 'core/themes/themes.dart';
+import 'dependency_injection.dart';
 import 'features/auth/presentation/page/login_page.dart';
+import 'features/product/presentation/pages/product_list_page.dart';
 
 class SplashPage extends StatefulWidget {
   static const String routes = '/splash_page';
@@ -20,9 +24,18 @@ class _SplashPageState extends State<SplashPage>
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
 
     Future.delayed(const Duration(seconds: 3), () {
-      // ignore: use_build_context_synchronously
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => LoginPage()));
+      final sharedPref = locator<SharedPreferences>();
+
+      final result = sharedPref.getString(AppData.tokenPlacement);
+      if (result == null) {
+        // ignore: use_build_context_synchronously
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (_) => LoginPage()));
+      } else {
+        // ignore: use_build_context_synchronously
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => const ProductListPage()));
+      }
     });
   }
 
