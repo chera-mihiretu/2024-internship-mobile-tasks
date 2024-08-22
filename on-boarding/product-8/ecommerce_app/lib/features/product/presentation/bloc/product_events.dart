@@ -18,7 +18,7 @@ class UpdateProductEvent extends ProductEvents {
   final String id;
   final String name;
   final String description;
-  final int price;
+  final String price;
 
   UpdateProductEvent({
     required this.id,

@@ -6,6 +6,7 @@ import '../bloc/product_bloc.dart';
 import '../bloc/product_events.dart';
 import '../bloc/product_states.dart';
 import '../widgets/product_widgets.dart';
+import 'update_product_page.dart';
 
 // ignore: must_be_immutable
 class SingleProduct extends StatelessWidget {
@@ -131,12 +132,17 @@ class SingleProduct extends StatelessWidget {
                     BlocBuilder<ProductBloc, ProductStates>(
                       builder: (context, state) {
                         if (state is LoadedSingleProductState) {
-                          return Text(
-                            state.productEntity.description,
-                            style: const TextStyle(
-                              color: Colors.grey,
-                              fontSize: 18,
-                              fontFamily: 'poppins',
+                          return ConstrainedBox(
+                            constraints: BoxConstraints(
+                                maxWidth:
+                                    MediaQuery.of(context).size.width / 2),
+                            child: Text(
+                              state.productEntity.description,
+                              style: const TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 18,
+                                  fontFamily: 'poppins',
+                                  overflow: TextOverflow.ellipsis),
                             ),
                           );
                         } else {
@@ -299,7 +305,21 @@ class SingleProduct extends StatelessWidget {
                       },
                       label: 'DELETE',
                     ),
-                    FillCustomButton(press: () {}, label: 'ADD'),
+                    FillCustomButton(
+                        press: () {
+                          final state =
+                              BlocProvider.of<ProductBloc>(context).state;
+                          if (state is LoadedSingleProductState) {
+                            BlocProvider.of<ProductBloc>(context).add(
+                              GetSingleProductEvents(
+                                  id: state.productEntity.id),
+                            );
+                          }
+
+                          Navigator.pushNamed(
+                              context, UpdateProductPage.routes);
+                        },
+                        label: 'UPDATE'),
                   ],
                 ),
               ),

@@ -81,4 +81,9 @@ final class InputValidatedState extends InputValidationState {
     bool value = name & price & catagory & (imageUrl != null);
     return value;
   }
+
+  bool isValidForUpdate() {
+    bool value = name && price && catagory;
+    return value;
+  }
 }

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/constants.dart';
@@ -70,7 +69,7 @@ class ProductBloc extends Bloc<ProductEvents, ProductStates> {
         id: event.id,
         name: event.name,
         description: event.description,
-        price: event.price,
+        price: int.parse(event.price),
         imageUrl: '',
       );
       final result = await updateProductUsecase.execute(entity);
