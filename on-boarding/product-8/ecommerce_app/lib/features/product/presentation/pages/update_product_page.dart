@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/validator/validator.dart';
 import '../bloc/cubit/input_validation_cubit.dart';
 import '../bloc/product_bloc.dart';
 import '../bloc/product_events.dart';
@@ -53,7 +54,13 @@ class UpdateProductPage extends StatelessWidget with AppBars {
               builder: (context, state) {
                 if (state is LoadedSingleProductState) {
                   nameControl.text = state.productEntity.name;
+                  BlocProvider.of<InputValidationCubit>(context).checkChanges(
+                      [InputDataValidator.name, state.productEntity.name]);
                   priceControl.text = state.productEntity.price.toString();
+                  BlocProvider.of<InputValidationCubit>(context).checkChanges([
+                    InputDataValidator.price,
+                    state.productEntity.price.toString()
+                  ]);
                   descControl.text = state.productEntity.description;
                 }
                 return Column(
@@ -95,17 +102,19 @@ class UpdateProductPage extends StatelessWidget with AppBars {
                                           price: priceControl.text.trim(),
                                         ),
                                       );
+                                      return;
                                     } else {
                                       Navigator.pop(context);
                                     }
                                   }
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Invalid Input'),
+                                      duration: Duration(seconds: 2),
+                                    ),
+                                  );
                                 }
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Invalid Input'),
-                                    duration: Duration(seconds: 2),
-                                  ),
-                                );
                               },
                               label: 'UPDATE'),
                         )

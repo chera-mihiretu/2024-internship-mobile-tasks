@@ -8,6 +8,7 @@ import 'package:http_parser/http_parser.dart';
 
 import '../../../../core/constants/constants.dart';
 import '../../../../core/errors/exceptions/product_exceptions.dart';
+import '../../../auth/data/data_source/auth_local_data_source.dart';
 import '../models/product_model.dart';
 
 abstract class RemoteProductDataSource {
@@ -24,8 +25,10 @@ abstract class RemoteProductDataSource {
 
 class RemoteProductDataSourceImp implements RemoteProductDataSource {
   final http.Client client;
+  final AuthLocalDataSource authLocalDataSource;
+  Map<String, String> headerWithToken = Map.from(AppData.jsonHeader);
 
-  RemoteProductDataSourceImp(this.client);
+  RemoteProductDataSourceImp(this.client, this.authLocalDataSource);
 
   /// Send request to server to delete a given product by the provided [id]
   ///
@@ -58,9 +61,13 @@ class RemoteProductDataSourceImp implements RemoteProductDataSource {
   /// Throws [ServerException] if the request failed
   @override
   Future<int> insertProduct(ProductModel productModel) async {
+    final headerAuth = await authLocalDataSource.getToken();
+
+    headerWithToken['Authorization'] = 'Bearer ${headerAuth.token}';
     try {
       final uri = Uri.parse(AppData.allProductUrl);
       final request = http.MultipartRequest('POST', uri);
+      request.headers.addAll(headerWithToken);
       if (!File(productModel.imageUrl).existsSync()) {
         throw ServerException();
       }
@@ -100,7 +107,7 @@ class RemoteProductDataSourceImp implements RemoteProductDataSource {
         {
           'name': productModel.name,
           'description': productModel.description,
-          'price': '${productModel.price}',
+          'price': productModel.price,
         },
       );
 
@@ -108,7 +115,10 @@ class RemoteProductDataSourceImp implements RemoteProductDataSource {
   ///
   /// Throws an exceptions[ServerException] which is later also thrown by the calling methods
   Future<int> executeQuery(String requestType, String url,
-      [Map<String, String>? data]) async {
+      [Map<String, dynamic>? data]) async {
+    final headerAuth = await authLocalDataSource.getToken();
+
+    headerWithToken['Authorization'] = 'Bearer ${headerAuth.token}';
     Map<String, dynamic> typeMap = {
       AppData.post: client.post,
       AppData.get: client.get,
@@ -120,10 +130,10 @@ class RemoteProductDataSourceImp implements RemoteProductDataSource {
       late http.Response result;
       if (data != null) {
         result = await typeMap[requestType](Uri.parse(url),
-            body: data, headers: AppData.jsonHeader);
+            body: json.encode(data), headers: headerWithToken);
       } else {
         result = await typeMap[requestType](Uri.parse(url),
-            headers: AppData.jsonHeader);
+            headers: headerWithToken);
       }
       if (result.statusCode == 200) {
         return AppData.getCorrespondingSuccess(requestType);
@@ -140,15 +150,20 @@ class RemoteProductDataSourceImp implements RemoteProductDataSource {
   /// Throws [ServerException] if request is failed
   Future<List<ProductModel>> getProductRefactor(String url,
       [String? id]) async {
+    final headerAuth = await authLocalDataSource.getToken();
+
+    headerWithToken['Authorization'] = 'Bearer ${headerAuth.token}';
+
     try {
       late http.Response result;
 
       if (id != null) {
         result = await client.get(Uri.parse('${AppData.allProductUrl}/$id'),
-            headers: AppData.jsonHeader);
+            headers: headerWithToken);
       } else {
-        result = await client.get(Uri.parse(url), headers: AppData.jsonHeader);
+        result = await client.get(Uri.parse(url), headers: headerWithToken);
       }
+
       if (result.statusCode == 200) {
         if (id != null) {
           Map<String, dynamic> finalResult = json.decode(result.body);

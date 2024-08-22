@@ -65,6 +65,7 @@ class ProductBloc extends Bloc<ProductEvents, ProductStates> {
 
     on<UpdateProductEvent>((event, emit) async {
       emit(LoadingState());
+
       ProductEntity entity = ProductEntity(
         id: event.id,
         name: event.name,
@@ -73,6 +74,7 @@ class ProductBloc extends Bloc<ProductEvents, ProductStates> {
         imageUrl: '',
       );
       final result = await updateProductUsecase.execute(entity);
+
       result.fold((failure) {
         emit(ErrorState(message: failure.message));
       }, (data) {

@@ -39,7 +39,7 @@ Future<void> init() async {
   // data layers
   // Remote Data
   locator.registerLazySingleton<RemoteProductDataSource>(
-      () => RemoteProductDataSourceImp(locator()));
+      () => RemoteProductDataSourceImp(locator(), locator()));
   locator.registerLazySingleton<LocalProductDataSource>(
       () => LocalProductDataSourceImpl(locator()));
   locator.registerLazySingleton<RemoteAuthDataSource>(
