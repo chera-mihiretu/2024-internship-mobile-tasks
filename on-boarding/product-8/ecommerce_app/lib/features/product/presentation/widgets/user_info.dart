@@ -5,11 +5,12 @@ import '../../../../core/themes/themes.dart';
 class UserInfo extends StatelessWidget {
   final String day;
   final String userName;
-  const UserInfo({
-    super.key,
-    required this.day,
-    required this.userName,
-  });
+  final VoidCallback iconPres;
+  const UserInfo(
+      {super.key,
+      required this.day,
+      required this.userName,
+      required this.iconPres});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -78,9 +79,9 @@ class UserInfo extends StatelessWidget {
                 border: Border.all(color: MyTheme.ecGrey, width: 2),
                 borderRadius: BorderRadius.circular(16)),
             child: IconButton(
-              onPressed: () {},
+              onPressed: iconPres,
               icon: const Icon(
-                Icons.notifications_none,
+                Icons.logout,
                 color: Colors.black,
                 size: 25,
               ),

@@ -3,7 +3,6 @@ import 'package:ecommerce_app/core/constants/constants.dart';
 import 'package:ecommerce_app/core/errors/failures/failure.dart';
 import 'package:ecommerce_app/core/validator/validator.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
 
 void main() {
   late InputDataValidator inputDataValidator;

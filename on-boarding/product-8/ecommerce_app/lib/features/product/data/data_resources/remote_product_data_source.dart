@@ -181,8 +181,8 @@ class RemoteProductDataSourceImp implements RemoteProductDataSource {
       } else {
         throw ServerException();
       }
-    } on SocketException {
-      throw ServerException();
+    } on Exception {
+      rethrow;
     }
   }
 }

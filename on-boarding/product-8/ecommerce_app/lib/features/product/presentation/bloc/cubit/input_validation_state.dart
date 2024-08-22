@@ -9,6 +9,7 @@ sealed class InputValidationState extends Equatable {
   String? nameMessage;
   String? catagoryMessage;
   String? priceMessage;
+  static final File newFile = File('');
   InputValidationState(
       {required this.name,
       required this.catagory,
@@ -19,7 +20,12 @@ sealed class InputValidationState extends Equatable {
       this.priceMessage});
 
   @override
-  List<Object> get props => [name, catagory, price, imageUrl ?? File('')];
+  List<Object> get props => [
+        name,
+        catagory,
+        price,
+        imageUrl ?? newFile,
+      ];
 }
 
 // ignore: must_be_immutable

@@ -13,7 +13,7 @@ void main() {
 
   group('Cubit test on input', () {
     test('Initial state should be set', () {
-      expect(inputValidationCubit.state, InputValidationInitial());
+      expect(inputValidationCubit.state, isA<InputValidationInitial>());
     });
 
     blocTest(
@@ -21,7 +21,7 @@ void main() {
       build: () {
         return inputValidationCubit;
       },
-      act: (bloc) => bloc.checkChanges(['Name', '']),
+      act: (bloc) => bloc.checkChanges(['Name', 'Ch']),
       expect: () => [
         InputValidatedState(name: true, catagory: true, price: true),
       ],

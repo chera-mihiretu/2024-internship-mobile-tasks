@@ -143,7 +143,7 @@ void main() {
       act: (bloc) => bloc.add(InsertProductEvent(
           name: TestingDatas.testDataEntity.name,
           imageUrl: File(TestingDatas.testDataEntity.imageUrl),
-          price: '${TestingDatas.testDataEntity.price}',
+          price: TestingDatas.testDataEntity.price.toString(),
           description: TestingDatas.testDataEntity.description)),
       expect: () => [
         LoadingState(),
@@ -160,7 +160,7 @@ void main() {
       act: (bloc) => bloc.add(InsertProductEvent(
           name: TestingDatas.testDataEntity.name,
           imageUrl: File(TestingDatas.testDataEntity.imageUrl),
-          price: '${TestingDatas.testDataEntity.price}',
+          price: '${TestingDatas.testDataEntity.price.toString()}',
           description: TestingDatas.testDataEntity.description)),
       expect: () => [
         LoadingState(),
@@ -180,7 +180,7 @@ void main() {
       act: (bloc) => bloc.add(InsertProductEvent(
           name: TestingDatas.testDataEntity.name,
           imageUrl: File(TestingDatas.testDataEntity.imageUrl),
-          price: '${TestingDatas.testDataEntity.price}',
+          price: TestingDatas.testDataEntity.price.toString(),
           description: TestingDatas.testDataEntity.description)),
       expect: () => [
         LoadingState(),
@@ -202,7 +202,7 @@ void main() {
       act: (bloc) => bloc.add(UpdateProductEvent(
           id: TestingDatas.testDataEntity.id,
           name: TestingDatas.testDataEntity.name,
-          price: TestingDatas.testDataEntity.price,
+          price: TestingDatas.testDataEntity.price.toString(),
           description: TestingDatas.testDataEntity.description)),
       expect: () => [
         LoadingState(),
@@ -219,7 +219,7 @@ void main() {
       act: (bloc) => bloc.add(UpdateProductEvent(
           id: TestingDatas.testDataEntity.id,
           name: TestingDatas.testDataEntity.name,
-          price: TestingDatas.testDataEntity.price,
+          price: TestingDatas.testDataEntity.price.toString(),
           description: TestingDatas.testDataEntity.description)),
       expect: () => [
         LoadingState(),
@@ -239,7 +239,7 @@ void main() {
       act: (bloc) => bloc.add(UpdateProductEvent(
           id: TestingDatas.testDataEntity.id,
           name: TestingDatas.testDataEntity.name,
-          price: TestingDatas.testDataEntity.price,
+          price: TestingDatas.testDataEntity.price.toString(),
           description: TestingDatas.testDataEntity.description)),
       expect: () => [
         LoadingState(),

@@ -4,8 +4,8 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i10;
-import 'dart:convert' as _i25;
-import 'dart:typed_data' as _i27;
+import 'dart:convert' as _i27;
+import 'dart:typed_data' as _i29;
 
 import 'package:dartz/dartz.dart' as _i2;
 import 'package:ecommerce_app/core/errors/failures/failure.dart' as _i11;
@@ -20,7 +20,11 @@ import 'package:ecommerce_app/features/auth/data/model/token_model.dart' as _i6;
 import 'package:ecommerce_app/features/auth/domain/entities/user_entity.dart'
     as _i22;
 import 'package:ecommerce_app/features/auth/domain/repositories/auth_repository.dart'
-    as _i21;
+    as _i8;
+import 'package:ecommerce_app/features/auth/domain/usecases/log_in_usecase.dart'
+    as _i25;
+import 'package:ecommerce_app/features/auth/domain/usecases/sign_up_usecase.dart'
+    as _i26;
 import 'package:ecommerce_app/features/product/data/data_resources/local_product_data_source.dart'
     as _i15;
 import 'package:ecommerce_app/features/product/data/data_resources/remote_product_data_source.dart'
@@ -32,21 +36,21 @@ import 'package:ecommerce_app/features/product/domain/entities/product.dart'
 import 'package:ecommerce_app/features/product/domain/repositories/product_repository.dart'
     as _i5;
 import 'package:ecommerce_app/features/product/domain/usecases/delete_product_usecase.dart'
-    as _i20;
+    as _i21;
 import 'package:ecommerce_app/features/product/domain/usecases/get_all_products_usecase.dart'
-    as _i16;
-import 'package:ecommerce_app/features/product/domain/usecases/get_product_usecase.dart'
     as _i17;
-import 'package:ecommerce_app/features/product/domain/usecases/insert_product_usecase.dart'
-    as _i19;
-import 'package:ecommerce_app/features/product/domain/usecases/update_product_usecase.dart'
+import 'package:ecommerce_app/features/product/domain/usecases/get_product_usecase.dart'
     as _i18;
+import 'package:ecommerce_app/features/product/domain/usecases/insert_product_usecase.dart'
+    as _i20;
+import 'package:ecommerce_app/features/product/domain/usecases/update_product_usecase.dart'
+    as _i19;
 import 'package:http/http.dart' as _i9;
 import 'package:internet_connection_checker/internet_connection_checker.dart'
     as _i4;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i26;
-import 'package:shared_preferences/shared_preferences.dart' as _i8;
+import 'package:mockito/src/dummies.dart' as _i28;
+import 'package:shared_preferences/shared_preferences.dart' as _i16;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -134,9 +138,9 @@ class _FakeSignedUpUserModel_6 extends _i1.SmartFake
         );
 }
 
-class _FakeSharedPreferences_7 extends _i1.SmartFake
-    implements _i8.SharedPreferences {
-  _FakeSharedPreferences_7(
+class _FakeAuthRepository_7 extends _i1.SmartFake
+    implements _i8.AuthRepository {
+  _FakeAuthRepository_7(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -518,7 +522,7 @@ class MockInternetConnectionChecker extends _i1.Mock
 /// A class which mocks [SharedPreferences].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockSharedPreferences extends _i1.Mock implements _i8.SharedPreferences {
+class MockSharedPreferences extends _i1.Mock implements _i16.SharedPreferences {
   MockSharedPreferences() {
     _i1.throwOnMissingStub(this);
   }
@@ -700,7 +704,7 @@ class MockSharedPreferences extends _i1.Mock implements _i8.SharedPreferences {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockGetAllProductUseCase extends _i1.Mock
-    implements _i16.GetAllProductUseCase {
+    implements _i17.GetAllProductUseCase {
   MockGetAllProductUseCase() {
     _i1.throwOnMissingStub(this);
   }
@@ -736,7 +740,7 @@ class MockGetAllProductUseCase extends _i1.Mock
 /// A class which mocks [GetProductUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGetProductUseCase extends _i1.Mock implements _i17.GetProductUseCase {
+class MockGetProductUseCase extends _i1.Mock implements _i18.GetProductUseCase {
   MockGetProductUseCase() {
     _i1.throwOnMissingStub(this);
   }
@@ -774,7 +778,7 @@ class MockGetProductUseCase extends _i1.Mock implements _i17.GetProductUseCase {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockUpdateProductUsecase extends _i1.Mock
-    implements _i18.UpdateProductUsecase {
+    implements _i19.UpdateProductUsecase {
   MockUpdateProductUsecase() {
     _i1.throwOnMissingStub(this);
   }
@@ -811,7 +815,7 @@ class MockUpdateProductUsecase extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockInsertProductUseCase extends _i1.Mock
-    implements _i19.InsertProductUseCase {
+    implements _i20.InsertProductUseCase {
   MockInsertProductUseCase() {
     _i1.throwOnMissingStub(this);
   }
@@ -848,7 +852,7 @@ class MockInsertProductUseCase extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockDeleteProductUseCase extends _i1.Mock
-    implements _i20.DeleteProductUseCase {
+    implements _i21.DeleteProductUseCase {
   MockDeleteProductUseCase() {
     _i1.throwOnMissingStub(this);
   }
@@ -883,7 +887,7 @@ class MockDeleteProductUseCase extends _i1.Mock
 /// A class which mocks [AuthRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAuthRepository extends _i1.Mock implements _i21.AuthRepository {
+class MockAuthRepository extends _i1.Mock implements _i8.AuthRepository {
   MockAuthRepository() {
     _i1.throwOnMissingStub(this);
   }
@@ -976,15 +980,6 @@ class MockAuthLocalDataSource extends _i1.Mock
   }
 
   @override
-  _i8.SharedPreferences get sharedPreferences => (super.noSuchMethod(
-        Invocation.getter(#sharedPreferences),
-        returnValue: _FakeSharedPreferences_7(
-          this,
-          Invocation.getter(#sharedPreferences),
-        ),
-      ) as _i8.SharedPreferences);
-
-  @override
   _i10.Future<bool> saveToken(_i6.TokenModel? token) => (super.noSuchMethod(
         Invocation.method(
           #saveToken,
@@ -1007,6 +1002,76 @@ class MockAuthLocalDataSource extends _i1.Mock
           ),
         )),
       ) as _i10.Future<_i6.TokenModel>);
+}
+
+/// A class which mocks [LogInUsecase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockLogInUsecase extends _i1.Mock implements _i25.LogInUsecase {
+  MockLogInUsecase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i8.AuthRepository get authRepository => (super.noSuchMethod(
+        Invocation.getter(#authRepository),
+        returnValue: _FakeAuthRepository_7(
+          this,
+          Invocation.getter(#authRepository),
+        ),
+      ) as _i8.AuthRepository);
+
+  @override
+  _i10.Future<_i2.Either<_i11.Failure, bool>> execute(_i22.UserEntity? user) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #execute,
+          [user],
+        ),
+        returnValue: _i10.Future<_i2.Either<_i11.Failure, bool>>.value(
+            _FakeEither_0<_i11.Failure, bool>(
+          this,
+          Invocation.method(
+            #execute,
+            [user],
+          ),
+        )),
+      ) as _i10.Future<_i2.Either<_i11.Failure, bool>>);
+}
+
+/// A class which mocks [SignUpUsecase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSignUpUsecase extends _i1.Mock implements _i26.SignUpUsecase {
+  MockSignUpUsecase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i8.AuthRepository get authRepository => (super.noSuchMethod(
+        Invocation.getter(#authRepository),
+        returnValue: _FakeAuthRepository_7(
+          this,
+          Invocation.getter(#authRepository),
+        ),
+      ) as _i8.AuthRepository);
+
+  @override
+  _i10.Future<_i2.Either<_i11.Failure, bool>> execute(_i22.UserEntity? user) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #execute,
+          [user],
+        ),
+        returnValue: _i10.Future<_i2.Either<_i11.Failure, bool>>.value(
+            _FakeEither_0<_i11.Failure, bool>(
+          this,
+          Invocation.method(
+            #execute,
+            [user],
+          ),
+        )),
+      ) as _i10.Future<_i2.Either<_i11.Failure, bool>>);
 }
 
 /// A class which mocks [Client].
@@ -1064,7 +1129,7 @@ class MockHttpClient extends _i1.Mock implements _i9.Client {
     Uri? url, {
     Map<String, String>? headers,
     Object? body,
-    _i25.Encoding? encoding,
+    _i27.Encoding? encoding,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -1095,7 +1160,7 @@ class MockHttpClient extends _i1.Mock implements _i9.Client {
     Uri? url, {
     Map<String, String>? headers,
     Object? body,
-    _i25.Encoding? encoding,
+    _i27.Encoding? encoding,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -1126,7 +1191,7 @@ class MockHttpClient extends _i1.Mock implements _i9.Client {
     Uri? url, {
     Map<String, String>? headers,
     Object? body,
-    _i25.Encoding? encoding,
+    _i27.Encoding? encoding,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -1157,7 +1222,7 @@ class MockHttpClient extends _i1.Mock implements _i9.Client {
     Uri? url, {
     Map<String, String>? headers,
     Object? body,
-    _i25.Encoding? encoding,
+    _i27.Encoding? encoding,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -1194,7 +1259,7 @@ class MockHttpClient extends _i1.Mock implements _i9.Client {
           [url],
           {#headers: headers},
         ),
-        returnValue: _i10.Future<String>.value(_i26.dummyValue<String>(
+        returnValue: _i10.Future<String>.value(_i28.dummyValue<String>(
           this,
           Invocation.method(
             #read,
@@ -1205,7 +1270,7 @@ class MockHttpClient extends _i1.Mock implements _i9.Client {
       ) as _i10.Future<String>);
 
   @override
-  _i10.Future<_i27.Uint8List> readBytes(
+  _i10.Future<_i29.Uint8List> readBytes(
     Uri? url, {
     Map<String, String>? headers,
   }) =>
@@ -1215,8 +1280,8 @@ class MockHttpClient extends _i1.Mock implements _i9.Client {
           [url],
           {#headers: headers},
         ),
-        returnValue: _i10.Future<_i27.Uint8List>.value(_i27.Uint8List(0)),
-      ) as _i10.Future<_i27.Uint8List>);
+        returnValue: _i10.Future<_i29.Uint8List>.value(_i29.Uint8List(0)),
+      ) as _i10.Future<_i29.Uint8List>);
 
   @override
   _i10.Future<_i9.StreamedResponse> send(_i9.BaseRequest? request) =>

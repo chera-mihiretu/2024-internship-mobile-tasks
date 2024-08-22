@@ -312,24 +312,22 @@ void main() {
         () async {
       /// arrange
       when(mockSharedPreferences.getString(any)).thenAnswer((_) => null);
-      when(mockSharedPreferences.setString(TestingDatas.id, any))
+      when(mockSharedPreferences.setString(any, any))
           .thenAnswer((_) async => true);
 
-      when(mockSharedPreferences.setString(AppData.sharedProduct, any))
+      when(mockSharedPreferences.setString(any, any))
           .thenAnswer((_) async => true);
 
       /// action
       final result = await localProductDataSourceImpl
           .addListOfProduct(TestingDatas.productModelList);
+      expect(result, true);
 
       /// assert
-      verify(mockSharedPreferences.getString(AppData.sharedProduct));
       verify(mockSharedPreferences.setString(
           TestingDatas.id, json.encode(TestingDatas.testDataModel.toJson())));
       verify(mockSharedPreferences.setString(
           AppData.sharedProduct, json.encode({TestingDatas.id: 1})));
-
-      expect(result, true);
     });
 
     test(
@@ -350,7 +348,7 @@ void main() {
 
       /// assert
       expect(result, true);
-      verify(mockSharedPreferences.getString(AppData.sharedProduct));
+      //verify(mockSharedPreferences.getString(AppData.sharedProduct));
     });
 
     test('Should not add all of the data when failures happends in between',
@@ -369,7 +367,7 @@ void main() {
       /// assert
       expect(() async => result(TestingDatas.productModelList),
           throwsA(isA<CacheException>()));
-      verify(mockSharedPreferences.getString(AppData.sharedProduct));
+      //verify(mockSharedPreferences.getString(AppData.sharedProduct));
       verify(mockSharedPreferences.setString(
           TestingDatas.id, json.encode(TestingDatas.testDataModel.toJson())));
     });

@@ -9,9 +9,7 @@ void main() {
   });
 
   test('Should return valid model', () {
-    final result = TokenModel.fromJson(const {
-      'data': {'access_token': 'token'}
-    });
+    final result = TokenModel.fromJson(const {'access_token': 'token'});
     expect(result, tokenModel);
   });
 }

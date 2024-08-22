@@ -10,12 +10,15 @@ import '../../../../test_helper/auth_test_data/testing_data.dart';
 import '../../../../test_helper/test_helper_generation.mocks.dart';
 
 void main() {
-  late MockAuthRepository mockAuthRepository;
+  late MockLogInUsecase mockLogInUsecase;
+  late MockSignUpUsecase mockSignUpUsecase;
   late AuthBloc authBloc;
 
   setUp(() {
-    mockAuthRepository = MockAuthRepository();
-    authBloc = AuthBloc(repository: mockAuthRepository);
+    mockLogInUsecase = MockLogInUsecase();
+    mockSignUpUsecase = MockSignUpUsecase();
+    authBloc = AuthBloc(
+        signUpUsecase: mockSignUpUsecase, logInUsecase: mockLogInUsecase);
   });
 
   test('Bloc should in its iinitial point ', () {
@@ -25,7 +28,7 @@ void main() {
   blocTest(
     'log in test',
     build: () {
-      when(mockAuthRepository.logIn(any))
+      when(mockLogInUsecase.execute(any))
           .thenAnswer((_) async => const Right(true));
       return authBloc;
     },
@@ -44,7 +47,7 @@ void main() {
   blocTest(
     'log in test failed',
     build: () {
-      when(mockAuthRepository.logIn(any)).thenAnswer((_) async =>
+      when(mockLogInUsecase.execute(any)).thenAnswer((_) async =>
           Left(ServerFailure(AppData.getMessage(AppData.serverError))));
       return authBloc;
     },
@@ -63,7 +66,7 @@ void main() {
   blocTest(
     'Signup test',
     build: () {
-      when(mockAuthRepository.signUp(any))
+      when(mockSignUpUsecase.execute(any))
           .thenAnswer((_) async => const Right(true));
       return authBloc;
     },
@@ -83,7 +86,7 @@ void main() {
   blocTest(
     'Signup test faile',
     build: () {
-      when(mockAuthRepository.signUp(any)).thenAnswer((_) async =>
+      when(mockSignUpUsecase.execute(any)).thenAnswer((_) async =>
           Left(ServerFailure(AppData.getMessage(AppData.serverError))));
       return authBloc;
     },

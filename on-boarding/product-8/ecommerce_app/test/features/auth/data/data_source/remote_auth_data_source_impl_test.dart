@@ -81,13 +81,13 @@ void main() {
             'password': AuthData.password
           },
         ),
-      ).thenAnswer((_) async => http.Response('Done', 201));
+      ).thenAnswer((_) async => http.Response(AuthData.readJson(), 201));
 
       /// action
       final result = await remoteAuthDataSourceImpl.signUp(AuthData.userEntity);
 
       /// assert
-      expect(result, true);
+      expect(result, AuthData.signedUpUserModel);
     });
 
     test('Should return throw server exception when data is valid', () async {

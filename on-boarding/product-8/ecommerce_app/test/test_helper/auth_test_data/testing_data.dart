@@ -33,7 +33,7 @@ class AuthData {
       dir = dir.replaceAll('/test', '');
     }
 
-    dir = '$dir/test/test_helper/auth_test/json_request.json';
+    dir = '$dir/test/test_helper/auth_test_data/json_request.json';
 
     return File(dir).readAsStringSync();
   }

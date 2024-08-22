@@ -26,6 +26,7 @@ class RemoteAuthDataSourceImpl implements RemoteAuthDataSource {
         Uri.parse(AppData.logInUser),
         body: {'email': user.email, 'password': user.password},
       );
+
       if (result.statusCode == 201) {
         final Map<String, dynamic> jsonFormat = json.decode(result.body);
         return TokenModel.fromJson(jsonFormat['data']);
@@ -39,7 +40,7 @@ class RemoteAuthDataSourceImpl implements RemoteAuthDataSource {
     } on ServerException {
       rethrow;
     } on Exception {
-      throw ServerException();
+      rethrow;
     }
   }
 
@@ -68,7 +69,7 @@ class RemoteAuthDataSourceImpl implements RemoteAuthDataSource {
     } on ServerException {
       rethrow;
     } on Exception {
-      throw ServerException();
+      rethrow;
     }
   }
 }

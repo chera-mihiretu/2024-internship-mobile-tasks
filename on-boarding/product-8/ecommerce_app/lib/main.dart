@@ -9,7 +9,6 @@ import 'features/auth/presentation/page/login_page.dart';
 import 'features/auth/presentation/page/signup_page.dart';
 import 'features/product/presentation/bloc/cubit/input_validation_cubit.dart';
 import 'features/product/presentation/bloc/product_bloc.dart';
-import 'features/product/presentation/bloc/product_events.dart';
 import 'features/product/presentation/pages/add_product_page.dart';
 import 'features/product/presentation/pages/product_list_page.dart';
 import 'features/product/presentation/pages/search_product_page.dart';

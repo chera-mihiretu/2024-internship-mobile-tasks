@@ -104,7 +104,13 @@ class UpdateProductPage extends StatelessWidget with AppBars {
                                       );
                                       return;
                                     } else {
-                                      Navigator.pop(context);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text('Unknow Error Input'),
+                                          duration: Duration(seconds: 2),
+                                        ),
+                                      );
                                     }
                                   }
                                 } else {

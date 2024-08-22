@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../auth/presentation/page/login_page.dart';
 import '../bloc/product_bloc.dart';
 import '../bloc/product_events.dart';
 import '../widgets/product_widgets.dart';
@@ -26,15 +27,37 @@ class ProductListPage extends StatelessWidget {
           color: Colors.white,
         ),
       ),
-      body: const SafeArea(
+      body: SafeArea(
         child: Column(
           children: [
             UserInfo(
+              iconPres: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text('Logout'),
+                        content: const Text('Are you sure you want to logout.'),
+                        actions: [
+                          FillCustomButton(
+                              press: () {
+                                Navigator.pop(context);
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (context) => LoginPage(),
+                                  ),
+                                );
+                              },
+                              label: 'Logout')
+                        ],
+                      );
+                    });
+              },
               userName: 'Yohannes',
               day: 'July 14, 2023',
             ),
-            SearchNavigator(),
-            ProductListDisplayer(),
+            const SearchNavigator(),
+            const ProductListDisplayer(),
           ],
         ),
       ),
