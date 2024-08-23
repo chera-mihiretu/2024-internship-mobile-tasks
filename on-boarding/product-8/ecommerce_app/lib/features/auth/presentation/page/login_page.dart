@@ -71,6 +71,7 @@ class LoginPage extends StatelessWidget {
                   text: 'Password',
                   textColor: MyTheme.ecGrey,
                   fromWhere: AppData.login,
+                  obscure: true,
                 ),
                 Padding(
                   padding:

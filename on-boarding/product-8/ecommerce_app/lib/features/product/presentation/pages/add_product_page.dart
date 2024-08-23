@@ -94,13 +94,6 @@ class AddProductPage extends StatelessWidget with AppBars {
                     )
                   ],
                 ),
-                Row(
-                  children: [
-                    Expanded(
-                        child:
-                            OutlineCustomButton(press: () {}, label: 'DELETE'))
-                  ],
-                ),
               ],
             ),
           ),

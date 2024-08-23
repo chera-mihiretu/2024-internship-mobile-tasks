@@ -5,5 +5,6 @@ import '../entities/user_entity.dart';
 
 abstract class AuthRepository {
   Future<Either<Failure, bool>> logIn(UserEntity user);
+  Future<Either<Failure, bool>> logOut();
   Future<Either<Failure, bool>> signUp(UserEntity user);
 }

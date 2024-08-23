@@ -12,13 +12,17 @@ import '../../../../test_helper/test_helper_generation.mocks.dart';
 void main() {
   late MockLogInUsecase mockLogInUsecase;
   late MockSignUpUsecase mockSignUpUsecase;
+  late MockLogOutUsecase mockLogOutUsecase;
   late AuthBloc authBloc;
 
   setUp(() {
     mockLogInUsecase = MockLogInUsecase();
+    mockLogOutUsecase = MockLogOutUsecase();
     mockSignUpUsecase = MockSignUpUsecase();
     authBloc = AuthBloc(
-        signUpUsecase: mockSignUpUsecase, logInUsecase: mockLogInUsecase);
+        signUpUsecase: mockSignUpUsecase,
+        logInUsecase: mockLogInUsecase,
+        logOutUsecase: mockLogOutUsecase);
   });
 
   test('Bloc should in its iinitial point ', () {
@@ -33,7 +37,7 @@ void main() {
       return authBloc;
     },
     act: (bloc) => bloc.add(
-      LogInEvent(
+      const LogInEvent(
         email: AuthData.email,
         password: AuthData.password,
       ),
@@ -52,7 +56,7 @@ void main() {
       return authBloc;
     },
     act: (bloc) => bloc.add(
-      LogInEvent(
+      const LogInEvent(
         email: AuthData.email,
         password: AuthData.password,
       ),
@@ -71,7 +75,7 @@ void main() {
       return authBloc;
     },
     act: (bloc) => bloc.add(
-      SignUpEvent(
+      const SignUpEvent(
         name: AuthData.name,
         email: AuthData.email,
         password: AuthData.password,
@@ -91,7 +95,7 @@ void main() {
       return authBloc;
     },
     act: (bloc) => bloc.add(
-      SignUpEvent(
+      const SignUpEvent(
         name: AuthData.name,
         email: AuthData.email,
         password: AuthData.password,
@@ -102,4 +106,27 @@ void main() {
       SignupErrorState(message: AppData.getMessage(AppData.serverError)),
     ],
   );
+
+  group('Logout state test', () {
+    blocTest('Should emit logout success when logout success',
+        build: () {
+          when(mockLogOutUsecase.execute())
+              .thenAnswer((_) async => const Right(true));
+          return authBloc;
+        },
+        act: (bloc) => bloc.add(LogOutEvent()),
+        expect: () => [LogoutSuccess()]);
+
+    blocTest('Should emit logout success when logout success',
+        build: () {
+          when(mockLogOutUsecase.execute()).thenAnswer((_) async =>
+              Left(CacheFailure(AppData.getMessage(AppData.logoutError))));
+          return authBloc;
+        },
+        act: (bloc) => bloc.add(LogOutEvent()),
+        expect: () => [
+              LogoutFailedState(
+                  message: AppData.getMessage(AppData.logoutError))
+            ]);
+  });
 }

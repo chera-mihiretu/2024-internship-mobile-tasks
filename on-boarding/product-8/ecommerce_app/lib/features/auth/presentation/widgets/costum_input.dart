@@ -15,12 +15,14 @@ class CostumInput extends StatelessWidget {
   final int maxLine;
   final Color textColor;
   final String fromWhere;
+  final bool obscure;
   const CostumInput(
       {super.key,
       required this.hint,
       required this.control,
       required this.text,
       required this.fromWhere,
+      this.obscure = false,
       this.fillColor,
       this.borderColor,
       this.maxLine = 1,
@@ -65,6 +67,7 @@ class CostumInput extends StatelessWidget {
               return TextField(
                 controller: control,
                 maxLines: maxLine,
+                obscureText: obscure,
                 onChanged: (value) {
                   if (text == InputDataValidator.confirmPass) {
                     BlocProvider.of<UserInputValidationCubit>(context)

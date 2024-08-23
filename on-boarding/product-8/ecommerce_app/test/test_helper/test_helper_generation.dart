@@ -3,6 +3,7 @@ import 'package:ecommerce_app/features/auth/data/data_source/auth_local_data_sou
 import 'package:ecommerce_app/features/auth/data/data_source/remote_auth_data_source.dart';
 import 'package:ecommerce_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:ecommerce_app/features/auth/domain/usecases/log_in_usecase.dart';
+import 'package:ecommerce_app/features/auth/domain/usecases/log_out_usecase.dart';
 import 'package:ecommerce_app/features/auth/domain/usecases/sign_up_usecase.dart';
 import 'package:ecommerce_app/features/product/data/data_resources/local_product_data_source.dart';
 import 'package:ecommerce_app/features/product/data/data_resources/remote_product_data_source.dart';
@@ -35,6 +36,7 @@ import 'package:shared_preferences/shared_preferences.dart';
     AuthLocalDataSource,
     LogInUsecase,
     SignUpUsecase,
+    LogOutUsecase
   ],
   customMocks: [MockSpec<http.Client>(as: #MockHttpClient)],
 )

@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../domain/entities/user_entity.dart';
 import '../../domain/usecases/log_in_usecase.dart';
+import '../../domain/usecases/log_out_usecase.dart';
 import '../../domain/usecases/sign_up_usecase.dart';
 
 part 'auth_event.dart';
@@ -12,7 +13,11 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final SignUpUsecase signUpUsecase;
   final LogInUsecase logInUsecase;
-  AuthBloc({required this.signUpUsecase, required this.logInUsecase})
+  final LogOutUsecase logOutUsecase;
+  AuthBloc(
+      {required this.signUpUsecase,
+      required this.logInUsecase,
+      required this.logOutUsecase})
       : super(AuthInitial()) {
     on<LogInEvent>((event, emit) async {
       emit(AuthLoadingstate());
@@ -35,6 +40,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(SignupErrorState(message: failure.message));
       }, (data) {
         emit(RegisterSuccessState());
+      });
+    });
+
+    on<LogOutEvent>((event, emit) async {
+      final result = await logOutUsecase.execute();
+      result.fold((failure) {
+        emit(LogoutFailedState(message: failure.message));
+      }, (data) {
+        emit(LogoutSuccess());
       });
     });
   }

@@ -41,4 +41,14 @@ class AuthRepositoryImpl extends AuthRepository {
       return Left(ServerFailure(AppData.getMessage(AppData.serverError)));
     }
   }
+
+  @override
+  Future<Either<Failure, bool>> logOut() async {
+    try {
+      await authLocalDataSource.clearToken();
+      return const Right(true);
+    } on CacheException {
+      return Left(CacheFailure(AppData.getMessage(AppData.logoutError)));
+    }
+  }
 }

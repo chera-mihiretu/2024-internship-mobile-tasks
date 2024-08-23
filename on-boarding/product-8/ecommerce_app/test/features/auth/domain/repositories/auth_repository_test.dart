@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:ecommerce_app/core/constants/constants.dart';
 import 'package:ecommerce_app/core/errors/failures/failure.dart';
 import 'package:ecommerce_app/features/auth/domain/usecases/log_in_usecase.dart';
+import 'package:ecommerce_app/features/auth/domain/usecases/log_out_usecase.dart';
 import 'package:ecommerce_app/features/auth/domain/usecases/sign_up_usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -13,10 +14,12 @@ void main() {
   late MockAuthRepository mockAuthRepository;
   late LogInUsecase logInUsecase;
   late SignUpUsecase signUpUseCase;
+  late LogOutUsecase logOutUsecase;
   setUp(() {
     mockAuthRepository = MockAuthRepository();
     logInUsecase = LogInUsecase(authRepository: mockAuthRepository);
     signUpUseCase = SignUpUsecase(authRepository: mockAuthRepository);
+    logOutUsecase = LogOutUsecase(repository: mockAuthRepository);
   });
 
   group('logIn usecase', () {
@@ -68,6 +71,33 @@ void main() {
 
       expect(
           result, Left(ServerFailure(AppData.getMessage(AppData.serverError))));
+    });
+  });
+
+  group('Log out repo test', () {
+    test('Logout repository', () async {
+      /// arrange
+      when(mockAuthRepository.logOut())
+          .thenAnswer((_) async => const Right(true));
+
+      /// action
+      final result = await logOutUsecase.execute();
+
+      /// assert
+      expect(result, const Right(true));
+    });
+
+    test('Logout repository', () async {
+      /// arrange
+      when(mockAuthRepository.logOut()).thenAnswer((_) async =>
+          Left(CacheFailure(AppData.getMessage(AppData.cacheError))));
+
+      /// action
+      final result = await logOutUsecase.execute();
+
+      /// assert
+      expect(
+          result, Left(CacheFailure(AppData.getMessage(AppData.cacheError))));
     });
   });
 }

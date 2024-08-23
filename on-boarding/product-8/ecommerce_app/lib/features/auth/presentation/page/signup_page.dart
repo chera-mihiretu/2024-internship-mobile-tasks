@@ -43,8 +43,11 @@ class SignUpPage extends StatelessWidget {
           if (state is RegisterSuccessState) {
             Navigator.pop(context);
           } else if (state is SignupErrorState) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(state.message)));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+              ),
+            );
           }
         },
         child: SingleChildScrollView(
@@ -84,6 +87,7 @@ class SignUpPage extends StatelessWidget {
                   text: 'Password',
                   textColor: MyTheme.ecGrey,
                   fromWhere: AppData.signup,
+                  obscure: true,
                 ),
                 CostumInput(
                   hint: '***********',
@@ -91,6 +95,7 @@ class SignUpPage extends StatelessWidget {
                   text: 'Confirm Password',
                   textColor: MyTheme.ecGrey,
                   fromWhere: AppData.signup,
+                  obscure: true,
                 ),
                 Padding(
                   padding:
@@ -111,14 +116,14 @@ class SignUpPage extends StatelessWidget {
                       ),
                       RichText(
                         text: const TextSpan(
-                            text: 'I undrestood the ',
-                            style:
-                                TextStyle(color: MyTheme.ecGrey, fontSize: 15),
-                            children: [
-                              TextSpan(
-                                  text: 'term & policy.',
-                                  style: TextStyle(color: MyTheme.ecBlue))
-                            ]),
+                          text: 'I undrestood the ',
+                          style: TextStyle(color: MyTheme.ecGrey, fontSize: 15),
+                          children: [
+                            TextSpan(
+                                text: 'term & policy.',
+                                style: TextStyle(color: MyTheme.ecBlue))
+                          ],
+                        ),
                       )
                     ],
                   ),
@@ -155,22 +160,25 @@ class SignUpPage extends StatelessWidget {
                 ),
                 RichText(
                   text: TextSpan(
-                      text: 'Have an account?',
-                      style:
-                          const TextStyle(color: MyTheme.ecGrey, fontSize: 20),
-                      children: [
-                        TextSpan(
-                          text: ' SIGN IN',
-                          style: const TextStyle(color: MyTheme.ecBlue),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              BlocProvider.of<UserInputValidationCubit>(context)
-                                  .reset();
-                              Navigator.pop(context);
-                            },
-                        )
-                      ]),
-                )
+                    text: 'Have an account?',
+                    style: const TextStyle(color: MyTheme.ecGrey, fontSize: 20),
+                    children: [
+                      TextSpan(
+                        text: ' SIGN IN',
+                        style: const TextStyle(color: MyTheme.ecBlue),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            BlocProvider.of<UserInputValidationCubit>(context)
+                                .reset();
+                            Navigator.pop(context);
+                          },
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
               ],
             ),
           ),

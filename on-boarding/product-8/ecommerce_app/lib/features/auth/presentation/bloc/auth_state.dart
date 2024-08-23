@@ -32,3 +32,13 @@ final class SignupErrorState extends AuthState {
   final String message;
   SignupErrorState({required this.message}) : super([message]);
 }
+
+// ignore: must_be_immutable
+final class LogoutSuccess extends AuthState {}
+
+// ignore: must_be_immutable
+final class LogoutFailedState extends AuthState {
+  final String message;
+
+  LogoutFailedState({required this.message});
+}

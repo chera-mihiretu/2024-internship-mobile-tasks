@@ -1,3 +1,5 @@
+import '../../features/auth/presentation/bloc/auth_bloc.dart';
+
 class AppData {
   //! Shared Preference list name
   static const String sharedProduct = 'my_shared_products';
@@ -44,6 +46,7 @@ class AppData {
   static const int invalidEmail = 2004;
   static const int checkbox = 2005;
   static const int confirmPassword = 2006;
+  static const int logoutError = 2007;
 
   static const Map<int, String> message = {
     cacheError: 'Caching Failed',
@@ -56,11 +59,12 @@ class AppData {
     successUpdate: 'Successfully Update',
     invalidPriceCharacter: 'Price can not contain character',
     negativePrice: 'Price can not be negative',
-    invalidName: 'Name can not contain character',
-    invalidEmail: 'Email is invalid',
+    invalidName: 'Check the name field!',
+    invalidEmail: 'Check the email field!',
     invalidPassword: 'Password length must be 8 or greater',
     checkbox: 'Must agree to our term and policy',
     confirmPassword: 'Your passwords must be similar',
+    logoutError: 'Couldn\'t logout please try again!'
   };
 
   static const Map<String, int> methodInt = {

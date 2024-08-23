@@ -7,6 +7,7 @@ import '../model/token_model.dart';
 abstract class AuthLocalDataSource {
   Future<bool> saveToken(TokenModel token);
   Future<TokenModel> getToken();
+  Future<bool> clearToken();
 }
 
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {
@@ -33,6 +34,16 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       } else {
         return TokenModel(token: result);
       }
+    } on Exception {
+      throw CacheException();
+    }
+  }
+
+  @override
+  Future<bool> clearToken() async {
+    try {
+      await sharedPreferences.remove(AppData.tokenPlacement);
+      return true;
     } on Exception {
       throw CacheException();
     }

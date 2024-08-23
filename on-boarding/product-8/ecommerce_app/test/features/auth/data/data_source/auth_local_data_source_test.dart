@@ -55,4 +55,28 @@ void main() {
       expect(() async => result(), throwsA(isA<CacheException>()));
     });
   });
+
+  group('log out ', () {
+    test('Should return true when the data is removed succesfully', () async {
+      /// arrange
+      when(mockSharedPreferences.remove(any)).thenAnswer((_) async => true);
+
+      /// action
+      final result = await authLocalDataSource.clearToken();
+
+      /// assert
+      expect(result, true);
+    });
+
+    test('Should return cache exception when exception is thrown', () async {
+      /// arrange
+      when(mockSharedPreferences.remove(any)).thenThrow(CacheException());
+
+      /// action
+      final result = authLocalDataSource.clearToken;
+
+      /// assert
+      expect(() async => result(), throwsA(isA<CacheException>()));
+    });
+  });
 }

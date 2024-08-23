@@ -12,11 +12,13 @@ class CostumInput extends StatelessWidget {
   final Color? borderColor;
   final int maxLine;
   final Color textColor;
+  final bool obsecure;
   const CostumInput(
       {super.key,
       required this.hint,
       required this.control,
       required this.text,
+      this.obsecure = false,
       this.fillColor,
       this.borderColor,
       this.maxLine = 1,
@@ -52,6 +54,7 @@ class CostumInput extends StatelessWidget {
               return TextField(
                 controller: control,
                 maxLines: maxLine,
+                obscureText: obsecure,
                 onChanged: (value) {
                   BlocProvider.of<InputValidationCubit>(context)
                       .checkChanges([text, value]);

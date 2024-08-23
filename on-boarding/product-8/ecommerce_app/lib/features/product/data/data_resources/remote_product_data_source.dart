@@ -142,6 +142,8 @@ class RemoteProductDataSourceImp implements RemoteProductDataSource {
       }
     } on SocketException {
       throw ServerException();
+    } on Exception {
+      rethrow;
     }
   }
 
@@ -181,6 +183,8 @@ class RemoteProductDataSourceImp implements RemoteProductDataSource {
       } else {
         throw ServerException();
       }
+    } on SocketException {
+      throw ServerException();
     } on Exception {
       rethrow;
     }
