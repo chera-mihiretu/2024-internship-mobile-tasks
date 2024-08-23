@@ -24,7 +24,7 @@ class RemoteAuthDataSourceImpl implements RemoteAuthDataSource {
       final result = await client.post(
         Uri.parse(AppData.logInUser),
         body: {'email': user.email, 'password': user.password},
-      );
+      ).timeout(const Duration(seconds: 15));
 
       if (result.statusCode == 201) {
         final Map<String, dynamic> jsonFormat = json.decode(result.body);
@@ -53,7 +53,7 @@ class RemoteAuthDataSourceImpl implements RemoteAuthDataSource {
           'email': user.email,
           'password': user.password
         },
-      );
+      ).timeout(const Duration(seconds: 15));
 
       if (result.statusCode == 201) {
         final Map<String, dynamic> jsonFormat = json.decode(result.body);
