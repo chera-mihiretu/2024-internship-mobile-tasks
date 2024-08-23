@@ -41,36 +41,42 @@ class ProductListPage extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        body: SafeArea(
-          child: Column(
-            children: [
-              UserInfo(
-                iconPres: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: const Text('Logout'),
-                          content:
-                              const Text('Are you sure you want to logout.'),
-                          actions: [
-                            FillCustomButton(
-                                press: () {
-                                  BlocProvider.of<AuthBloc>(context)
-                                      .add(LogOutEvent());
-                                  Navigator.pop(context);
-                                },
-                                label: 'Logout')
-                          ],
-                        );
-                      });
-                },
-                userName: 'Yohannes',
-                day: 'July 14, 2023',
-              ),
-              const SearchNavigator(),
-              const ProductListDisplayer(),
-            ],
+        body: RefreshIndicator(
+          onRefresh: () async {
+            await Future.delayed(const Duration(seconds: 1));
+            BlocProvider.of<ProductBloc>(context).add(LoadAllProductEvents());
+          },
+          child: SafeArea(
+            child: Column(
+              children: [
+                UserInfo(
+                  iconPres: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('Logout'),
+                            content:
+                                const Text('Are you sure you want to logout.'),
+                            actions: [
+                              FillCustomButton(
+                                  press: () {
+                                    BlocProvider.of<AuthBloc>(context)
+                                        .add(LogOutEvent());
+                                    Navigator.pop(context);
+                                  },
+                                  label: 'Logout')
+                            ],
+                          );
+                        });
+                  },
+                  userName: 'Yohannes',
+                  day: 'July 14, 2023',
+                ),
+                const SearchNavigator(),
+                const ProductListDisplayer(),
+              ],
+            ),
           ),
         ),
       ),
