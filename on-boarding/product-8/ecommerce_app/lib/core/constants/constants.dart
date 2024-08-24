@@ -1,5 +1,3 @@
-import '../../features/auth/presentation/bloc/auth_bloc.dart';
-
 class AppData {
   //! Shared Preference list name
   static const String sharedProduct = 'my_shared_products';
