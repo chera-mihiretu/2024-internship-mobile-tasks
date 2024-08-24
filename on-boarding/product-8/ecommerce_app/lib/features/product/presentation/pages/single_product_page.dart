@@ -5,6 +5,7 @@ import '../../../../core/themes/themes.dart';
 import '../bloc/product_bloc.dart';
 import '../bloc/product_events.dart';
 import '../bloc/product_states.dart';
+import '../widgets/loading_dialog.dart';
 import '../widgets/product_widgets.dart';
 import 'update_product_page.dart';
 
@@ -24,6 +25,7 @@ class SingleProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
+    String? id;
     const textStyle = TextStyle(
       fontFamily: 'poppins',
       fontWeight: FontWeight.bold,
@@ -36,7 +38,16 @@ class SingleProduct extends StatelessWidget {
             if (state is SuccessfullState) {
               BlocProvider.of<ProductBloc>(context).add(LoadAllProductEvents());
               Navigator.pop(context);
+              Navigator.pop(context);
             } else if (state is ErrorState) {
+              if (id != null) {
+                BlocProvider.of<ProductBloc>(context).add(
+                  GetSingleProductEvents(
+                    id: id!,
+                  ),
+                );
+              }
+              Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
@@ -55,6 +66,7 @@ class SingleProduct extends StatelessWidget {
                   BlocBuilder<ProductBloc, ProductStates>(
                     builder: (context, state) {
                       if (state is LoadedSingleProductState) {
+                        id = state.productEntity.id;
                         return Container(
                           height: 250,
                           width: double.infinity,
@@ -95,11 +107,8 @@ class SingleProduct extends StatelessWidget {
                         return Container(
                           height: 250,
                           width: double.infinity,
-                          decoration:
-                              const BoxDecoration(color: MyTheme.ecGrey),
-                          child: const Center(
-                            child: CircularProgressIndicator(),
-                          ),
+                          decoration: const BoxDecoration(
+                              color: MyTheme.skeletonColor1),
                         );
                       }
                     },
@@ -132,21 +141,33 @@ class SingleProduct extends StatelessWidget {
                     BlocBuilder<ProductBloc, ProductStates>(
                       builder: (context, state) {
                         if (state is LoadedSingleProductState) {
-                          return ConstrainedBox(
-                            constraints: BoxConstraints(
-                                maxWidth:
-                                    MediaQuery.of(context).size.width / 2),
-                            child: Text(
-                              state.productEntity.description,
-                              style: const TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 18,
-                                  fontFamily: 'poppins',
-                                  overflow: TextOverflow.ellipsis),
-                            ),
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ConstrainedBox(
+                                constraints: BoxConstraints(
+                                    maxWidth:
+                                        MediaQuery.of(context).size.width / 2),
+                                child: Text(
+                                  state.productEntity.description,
+                                  style: const TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 18,
+                                      fontFamily: 'poppins',
+                                      overflow: TextOverflow.ellipsis),
+                                ),
+                              ),
+                            ],
                           );
                         } else {
-                          return const Text('...');
+                          return Container(
+                            width: MediaQuery.of(context).size.width / 2,
+                            height: 20,
+                            decoration: const BoxDecoration(
+                                color: MyTheme.skeletonColor2,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5))),
+                          );
                         }
                       },
                     ),
@@ -192,19 +213,24 @@ class SingleProduct extends StatelessWidget {
                         ],
                       );
                     } else {
-                      return const Row(
+                      return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            '...',
-                            style: TextStyle(
-                                fontFamily: 'poppins',
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold),
+                          Container(
+                            width: MediaQuery.of(context).size.width / 3,
+                            height: 30,
+                            decoration: const BoxDecoration(
+                                color: MyTheme.skeletonColor1,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5))),
                           ),
-                          Text(
-                            '0\$',
-                            style: textStyle,
+                          Container(
+                            width: MediaQuery.of(context).size.width / 3,
+                            height: 30,
+                            decoration: const BoxDecoration(
+                                color: MyTheme.skeletonColor2,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5))),
                           ),
                         ],
                       );
@@ -282,7 +308,34 @@ class SingleProduct extends StatelessWidget {
                         ),
                       );
                     } else {
-                      return const LinearProgressIndicator();
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          for (int i = 0; i < 5; i++)
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 10),
+                              height: 20,
+                              decoration: const BoxDecoration(
+                                color: MyTheme.skeletonColor1,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(5),
+                                ),
+                              ),
+                            ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            width: MediaQuery.of(context).size.width / 2,
+                            height: 20,
+                            decoration: const BoxDecoration(
+                              color: MyTheme.skeletonColor1,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(5),
+                              ),
+                            ),
+                          )
+                        ],
+                      );
                     }
                   },
                 ),
@@ -299,6 +352,9 @@ class SingleProduct extends StatelessWidget {
                             BlocProvider.of<ProductBloc>(context).state;
                         if (result is LoadedSingleProductState) {
                           String id = result.productEntity.id;
+                          showDialog(
+                              context: context,
+                              builder: (context) => const LoadingDialog());
                           BlocProvider.of<ProductBloc>(context)
                               .add(DeleteProductEvent(id: id));
                         }
